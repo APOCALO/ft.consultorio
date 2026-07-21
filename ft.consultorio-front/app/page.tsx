@@ -1,6 +1,8 @@
+import { redirect } from "next/navigation"
 import { Bell, CalendarDays, Plus, Search } from "lucide-react"
 
-import { AppSidebar } from "@/components/dashboard/app-sidebar"
+import { getCurrentUser } from "@/lib/auth/session"
+import { AppSidebar, type SidebarUser } from "@/components/dashboard/app-sidebar"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -99,10 +101,19 @@ const ALERT_TONE = {
   info: "border-info-soft-border bg-info-soft text-info-soft-foreground",
 } as const
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
+  const user = await getCurrentUser()
+  if (!user) redirect("/login")
+
+  const sidebarUser: SidebarUser = {
+    fullName: user.fullName,
+    roleLabel: user.roles[0]?.name ?? "Usuario",
+    initials: initialsFrom(user.firstName, user.lastName),
+  }
+
   return (
     <SidebarProvider>
-      <AppSidebar />
+      <AppSidebar user={sidebarUser} />
       <SidebarInset>
         {/* Header sticky con blur · saludo contextual + un solo CTA primario */}
         <header className="sticky top-0 z-10 flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-border bg-background/70 px-4 py-3 backdrop-blur-md sm:px-6">
@@ -114,7 +125,7 @@ export default function DashboardPage() {
             />
             <div>
               <h1 className="text-lg leading-tight font-semibold tracking-tight">
-                Buenos días, Laura
+                {greeting()}, {user.firstName}
               </h1>
               <p className="text-xs text-muted-foreground">
                 Martes 21 de julio · 6 citas hoy
@@ -229,10 +240,6 @@ export default function DashboardPage() {
             </Card>
           </section>
 
-          <p className="text-center font-mono text-xs text-muted-foreground">
-            Presiona <kbd className="rounded-sm bg-muted px-1.5 py-0.5">d</kbd>{" "}
-            para alternar el modo oscuro
-          </p>
         </div>
       </SidebarInset>
     </SidebarProvider>
@@ -241,4 +248,15 @@ export default function DashboardPage() {
 
 function cnTone(tone: Kpi["tone"]) {
   return `flex items-center gap-1 text-[11.5px] ${TREND_TONE[tone]}`
+}
+
+function initialsFrom(firstName: string, lastName: string) {
+  return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase()
+}
+
+function greeting() {
+  const hour = new Date().getHours()
+  if (hour < 12) return "Buenos días"
+  if (hour < 19) return "Buenas tardes"
+  return "Buenas noches"
 }

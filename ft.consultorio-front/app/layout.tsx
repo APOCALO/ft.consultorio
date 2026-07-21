@@ -4,6 +4,7 @@ import { Inter, Cormorant_Garamond, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils"
 
 // Voz por defecto de la interfaz — Inter
@@ -53,6 +54,7 @@ export default function RootLayout({
       <body>
         <ThemeProvider>
           <TooltipProvider delay={300}>{children}</TooltipProvider>
+          <Toaster position="top-center" richColors />
         </ThemeProvider>
       </body>
     </html>

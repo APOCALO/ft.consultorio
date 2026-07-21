@@ -3,6 +3,7 @@
 import {
   CalendarDays,
   LayoutDashboard,
+  LogOut,
   Settings,
   Users,
   Wallet,
@@ -17,10 +18,18 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { logoutAction } from "@/lib/auth/actions"
+
+export type SidebarUser = {
+  fullName: string
+  roleLabel: string
+  initials: string
+}
 
 type NavItem = {
   title: string
@@ -62,7 +71,7 @@ function BrandMark() {
   )
 }
 
-export function AppSidebar() {
+export function AppSidebar({ user }: { user: SidebarUser }) {
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -97,21 +106,27 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" tooltip="Laura Saldarriaga">
+            <SidebarMenuButton size="lg" tooltip={user.fullName}>
               <Avatar className="size-8 rounded-full">
                 <AvatarFallback className="rounded-full bg-gradient-to-br from-bronze-300 to-bronze-600 text-xs font-semibold text-white">
-                  LS
+                  {user.initials}
                 </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left leading-tight group-data-[collapsible=icon]:hidden">
                 <span className="truncate text-sm font-medium">
-                  Laura Saldarriaga
+                  {user.fullName}
                 </span>
                 <span className="truncate text-xs text-muted-foreground">
-                  Fisioterapeuta
+                  {user.roleLabel}
                 </span>
               </div>
             </SidebarMenuButton>
+            <form action={logoutAction}>
+              <SidebarMenuAction type="submit" title="Cerrar sesión">
+                <LogOut />
+                <span className="sr-only">Cerrar sesión</span>
+              </SidebarMenuAction>
+            </form>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

@@ -10,6 +10,14 @@ namespace Ft.Consultorio.MsAuth.Infrastructure.Settings
     /// </remarks>
     public sealed record EmailVerificationOtpSettings
     {
+        /// <summary>
+        /// Cuando es <c>false</c>, el registro activa y verifica la cuenta al instante
+        /// (sin OTP ni envío de correo) y el usuario puede iniciar sesión de inmediato.
+        /// Útil mientras no exista un microservicio de notificaciones para enviar correos.
+        /// Por defecto <c>true</c> (se exige verificación por OTP).
+        /// </summary>
+        public bool Enabled { get; init; } = true;
+
         public int TtlMinutes { get; init; } = 10;
 
         /// <summary>

@@ -95,6 +95,10 @@ namespace Ft.Consultorio.MsAuth.Application.Auth.Commands.RegisterLocalUser
                 userName = $"user{userId.ToString("N")[..8]}";
             }
 
+            // Con la verificación por OTP desactivada, la cuenta queda activa y
+            // verificada al instante (no hay forma de enviar el correo todavía).
+            var requireVerification = _emailVerificationOtpSettings.Enabled;
+
             var user = User.Create(
                 createdById: userId,
                 authUserId: $"local:{userId}",
@@ -104,56 +108,65 @@ namespace Ft.Consultorio.MsAuth.Application.Auth.Commands.RegisterLocalUser
                 lastName: request.LastName,
                 birthDate: request.BirthDate,
                 avatarUrl: request.AvatarUrl,
-                isActive: false,
-                isEmailVerified: false,
+                isActive: !requireVerification,
+                isEmailVerified: !requireVerification,
                 settings: UserSettings.Create(userId, null, null, null),
                 id: userId);
 
             var passwordHash = _passwordHasher.HashPassword(user, request.Password);
             user.SetPasswordHash(passwordHash);
 
-            var otpDescriptor = _emailVerificationOtpService.CreateOtp();
-            var otp = EmailVerificationOtp.Create(
-                userId: user.Id,
-                email: user.UserEmail,
-                codeHash: otpDescriptor.CodeHash,
-                codeSalt: otpDescriptor.CodeSalt,
-                expiresAt: otpDescriptor.ExpiresAt);
-
             await _userRepository.AddAsync(user, cancellationToken);
-            await _emailVerificationOtpRepository.AddAsync(otp, cancellationToken);
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            await AuthAttemptLimiter.ClearAsync(_cache, attemptKey, _logger);
-            await EmailVerificationOtpResendLimiter.TryConsumeAsync(
-                _cache,
-                normalizedEmail,
-                request.RequestIp,
-                _emailVerificationOtpSettings,
-                _logger);
-
-            try
+            if (requireVerification)
             {
-                await _notifications.SendEmailVerificationOtpAsync(
-                    to: user.UserEmail,
-                    firstName: user.FirstName,
-                    otpCode: otpDescriptor.Code,
-                    expiresInMinutes: _emailVerificationOtpSettings.TtlMinutes,
-                    ct: cancellationToken);
+                var otpDescriptor = _emailVerificationOtpService.CreateOtp();
+                var otp = EmailVerificationOtp.Create(
+                    userId: user.Id,
+                    email: user.UserEmail,
+                    codeHash: otpDescriptor.CodeHash,
+                    codeSalt: otpDescriptor.CodeSalt,
+                    expiresAt: otpDescriptor.ExpiresAt);
+
+                await _emailVerificationOtpRepository.AddAsync(otp, cancellationToken);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                await AuthAttemptLimiter.ClearAsync(_cache, attemptKey, _logger);
+                await EmailVerificationOtpResendLimiter.TryConsumeAsync(
+                    _cache,
+                    normalizedEmail,
+                    request.RequestIp,
+                    _emailVerificationOtpSettings,
+                    _logger);
+
+                try
+                {
+                    await _notifications.SendEmailVerificationOtpAsync(
+                        to: user.UserEmail,
+                        firstName: user.FirstName,
+                        otpCode: otpDescriptor.Code,
+                        expiresInMinutes: _emailVerificationOtpSettings.TtlMinutes,
+                        ct: cancellationToken);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex,
+                        "Failed to dispatch OTP email for user {UserId} ({Email}).",
+                        user.Id,
+                        user.UserEmail);
+                }
             }
-            catch (Exception ex)
+            else
             {
-                _logger.LogError(ex,
-                    "Failed to dispatch OTP email for user {UserId} ({Email}).",
-                    user.Id,
-                    user.UserEmail);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+                await AuthAttemptLimiter.ClearAsync(_cache, attemptKey, _logger);
             }
 
             var response = new RegisterLocalUserPendingResponseDTO
             {
                 UserId = user.Id,
                 Email = user.UserEmail,
-                RequiresEmailVerification = true,
+                RequiresEmailVerification = requireVerification,
                 OtpLength = _emailVerificationOtpSettings.CodeLength,
                 OtpExpiresInMinutes = _emailVerificationOtpSettings.TtlMinutes,
                 ResendCooldownSeconds = _emailVerificationOtpSettings.ResendCooldownSeconds
