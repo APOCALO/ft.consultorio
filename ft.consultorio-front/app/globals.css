@@ -280,6 +280,20 @@
   ::selection { background: var(--bronze-200); color: var(--bronze-900); }
   .dark ::selection { background: var(--bronze-800); color: var(--bronze-50); }
 
+  /* Tailwind v4 dejó de forzar cursor:pointer en los <button> (cambio de
+     Preflight respecto a v3). Se restaura para los controles interactivos
+     habilitados. Los deshabilitados conservan su cursor y las utilidades
+     (cursor-not-allowed en disabled, cursor-*-resize del rail, etc.) ganan por
+     orden de capas, así que esto no pisa esos casos. */
+  button:not(:disabled):not([aria-disabled="true"]),
+  [role="button"]:not([data-disabled]):not([aria-disabled="true"]),
+  [role="tab"]:not([aria-disabled="true"]),
+  label:has(> button[role="checkbox"]),
+  label:has(> button[role="switch"]),
+  label:has(> button[role="radio"]) {
+    cursor: pointer;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: .01ms !important;

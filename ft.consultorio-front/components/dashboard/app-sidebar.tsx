@@ -20,9 +20,9 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarSeparator,
 } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { ThemeToggle } from "@/components/theme-toggle"
@@ -130,17 +130,11 @@ export function AppSidebar({ user }: { user: SidebarUser }) {
       </SidebarContent>
 
       <SidebarFooter>
-        <div className="flex items-center justify-between px-2 group-data-[collapsible=icon]:justify-center">
-          <span className="text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
-            Tema
-          </span>
-          <ThemeToggle />
-        </div>
-
         <SidebarMenu>
+          {/* Identidad del usuario (informativo) */}
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" tooltip={user.fullName}>
-              <Avatar className="size-8 rounded-full">
+            <div className="flex items-center gap-2 rounded-xl px-2 py-1.5 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
+              <Avatar className="size-8 shrink-0 rounded-full">
                 <AvatarFallback className="rounded-full bg-gradient-to-br from-bronze-300 to-bronze-600 text-xs font-semibold text-white">
                   {user.initials}
                 </AvatarFallback>
@@ -153,12 +147,32 @@ export function AppSidebar({ user }: { user: SidebarUser }) {
                   {user.roleLabel}
                 </span>
               </div>
-            </SidebarMenuButton>
-            <form action={logoutAction}>
-              <SidebarMenuAction type="submit" title="Cerrar sesión">
+            </div>
+          </SidebarMenuItem>
+
+          <SidebarSeparator className="my-1" />
+
+          {/* Cambiar tema */}
+          <SidebarMenuItem>
+            <div className="flex items-center justify-between rounded-xl px-3 py-1 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0">
+              <span className="text-sm text-muted-foreground group-data-[collapsible=icon]:hidden">
+                Tema
+              </span>
+              <ThemeToggle />
+            </div>
+          </SidebarMenuItem>
+
+          {/* Cerrar sesión */}
+          <SidebarMenuItem>
+            <form action={logoutAction} className="w-full">
+              <SidebarMenuButton
+                type="submit"
+                tooltip="Cerrar sesión"
+                className="text-muted-foreground hover:text-foreground"
+              >
                 <LogOut />
-                <span className="sr-only">Cerrar sesión</span>
-              </SidebarMenuAction>
+                <span>Cerrar sesión</span>
+              </SidebarMenuButton>
             </form>
           </SidebarMenuItem>
         </SidebarMenu>
