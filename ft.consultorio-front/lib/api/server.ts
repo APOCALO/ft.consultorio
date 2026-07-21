@@ -20,11 +20,27 @@ function requireEnv(name: string): string {
   return value
 }
 
-const BASE_URL = () => requireEnv("AUTH_API_BASE_URL").replace(/\/+$/, "")
+const AUTH_BASE_URL = () => requireEnv("AUTH_API_BASE_URL").replace(/\/+$/, "")
 const ALLOWED_ORIGIN = () => requireEnv("AUTH_ALLOWED_ORIGIN")
+
+/**
+ * URLs base por servicio, SIEMPRE a través del Gateway (YARP) — nunca al
+ * microservicio directo. El Gateway enruta por prefijo (`/msauth`,
+ * `/msmedicalrecords`) hacia el microservicio correspondiente.
+ */
+export type ApiService = "auth" | "medical-records"
+
+function baseUrlFor(service: ApiService): string {
+  if (service === "medical-records") {
+    return requireEnv("MEDICAL_RECORDS_API_BASE_URL").replace(/\/+$/, "")
+  }
+  return AUTH_BASE_URL()
+}
 
 interface ServerFetchOptions {
   method?: "GET" | "POST" | "PUT" | "DELETE"
+  /** Servicio destino (elige la URL base del Gateway). Por defecto `auth`. */
+  service?: ApiService
   /** Cuerpo JSON. Se serializa automáticamente. */
   body?: unknown
   /** Access token a enviar como `Authorization: Bearer`. */
@@ -42,9 +58,9 @@ export async function serverFetch<T>(
   path: string,
   options: ServerFetchOptions = {},
 ): Promise<T> {
-  const { method = "GET", body, accessToken, headers, signal } = options
+  const { method = "GET", service = "auth", body, accessToken, headers, signal } = options
 
-  const url = `${BASE_URL()}${path.startsWith("/") ? path : `/${path}`}`
+  const url = `${baseUrlFor(service)}${path.startsWith("/") ? path : `/${path}`}`
 
   const finalHeaders: Record<string, string> = {
     Accept: "application/json",
@@ -72,7 +88,7 @@ export async function serverFetch<T>(
     throw new ApiError(0, {
       title: "No se pudo contactar el servidor",
       detail:
-        "El servicio de autenticación no está disponible. Intenta de nuevo en unos segundos.",
+        "El servicio no está disponible. Intenta de nuevo en unos segundos.",
       status: 0,
     })
   }
@@ -93,6 +109,59 @@ export async function serverFetch<T>(
   }
 
   return (payload as ApiResponse<T>)?.data as T
+}
+
+/**
+ * Igual que {@link serverFetch} pero devuelve también la metadata de paginación
+ * del sobre `ApiResponse` (para listados paginados).
+ */
+export async function serverFetchPaged<T>(
+  path: string,
+  options: ServerFetchOptions = {},
+): Promise<{ data: T; pagination: ApiResponse<T>["pagination"] }> {
+  const { method = "GET", service = "auth", body, accessToken, headers, signal } =
+    options
+
+  const url = `${baseUrlFor(service)}${path.startsWith("/") ? path : `/${path}`}`
+
+  const finalHeaders: Record<string, string> = {
+    Accept: "application/json",
+    Origin: ALLOWED_ORIGIN(),
+    ...headers,
+  }
+  if (body !== undefined) finalHeaders["Content-Type"] = "application/json"
+  if (accessToken) finalHeaders["Authorization"] = `Bearer ${accessToken}`
+
+  let response: Response
+  try {
+    response = await fetch(url, {
+      method,
+      headers: finalHeaders,
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+      cache: "no-store",
+      signal,
+    })
+  } catch {
+    throw new ApiError(0, {
+      title: "No se pudo contactar el servidor",
+      detail: "El servicio no está disponible. Intenta de nuevo en unos segundos.",
+      status: 0,
+    })
+  }
+
+  const raw = await response.text()
+  const payload = raw ? safeJsonParse(raw) : undefined
+
+  if (!response.ok) {
+    const problem: ProblemDetails =
+      payload && typeof payload === "object"
+        ? (payload as ProblemDetails)
+        : { title: response.statusText, status: response.status }
+    throw new ApiError(response.status, problem)
+  }
+
+  const envelope = payload as ApiResponse<T>
+  return { data: envelope?.data as T, pagination: envelope?.pagination ?? null }
 }
 
 function safeJsonParse(raw: string): unknown {

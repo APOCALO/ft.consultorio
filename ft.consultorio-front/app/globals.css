@@ -11,6 +11,9 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* Tema por clase: `light` por defecto (sin clase) y `dark` cuando <html> lleva
+   la clase `.dark`. El layout la fija en SSR desde la cookie `theme` (sin flash)
+   y el botón de tema la alterna. Las utilidades `dark:*` responden a esa clase. */
 @custom-variant dark (&:is(.dark *));
 
 /* ----------------------------------------------------------------------------

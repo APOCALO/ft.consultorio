@@ -1,7 +1,21 @@
+import Link from "next/link"
 import { redirect } from "next/navigation"
-import { Bell, CalendarDays, Plus, Search } from "lucide-react"
+import {
+  Activity,
+  AlertTriangle,
+  ArrowRight,
+  CalendarClock,
+  ShieldAlert,
+  TrendingUp,
+  UserPlus,
+  Users,
+} from "lucide-react"
 
+import { ApiError } from "@/lib/api/types"
 import { getCurrentUser } from "@/lib/auth/session"
+import { getDashboard, getPatients } from "@/lib/medical-records/api"
+import { PATIENT_STATUS_LABELS, type Dashboard, type Patient } from "@/lib/medical-records/types"
+import { formatDate, initialsFromName, money } from "@/lib/format"
 import { AppSidebar, type SidebarUser } from "@/components/dashboard/app-sidebar"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -20,87 +34,6 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
-type Kpi = {
-  label: string
-  value: string
-  trend: string
-  tone: "success" | "warning" | "muted"
-}
-
-const KPIS: Kpi[] = [
-  { label: "Citas hoy", value: "6", trend: "▲ 2 vs. ayer", tone: "success" },
-  {
-    label: "Pacientes activos",
-    value: "48",
-    trend: "3 nuevos esta semana",
-    tone: "muted",
-  },
-  {
-    label: "Caja del día",
-    value: "$ 640.000",
-    trend: "1 copago pendiente",
-    tone: "warning",
-  },
-]
-
-const TREND_TONE = {
-  success: "text-success",
-  warning: "text-warning",
-  muted: "text-muted-foreground",
-} as const
-
-type Appointment = {
-  time: string
-  initials: string
-  name: string
-  service: string
-  gradient: string
-  status?: { label: string; variant: "success" | "warning" }
-}
-
-const AGENDA: Appointment[] = [
-  {
-    time: "09:00",
-    initials: "MR",
-    name: "M. Restrepo",
-    service: "Descarga",
-    gradient: "from-bronze-300 to-bronze-600",
-    status: { label: "Confirmada", variant: "success" },
-  },
-  {
-    time: "10:00",
-    initials: "JT",
-    name: "J. Tobón",
-    service: "Ventosas",
-    gradient: "from-plum-300 to-plum-600",
-    status: { label: "Por llegar", variant: "warning" },
-  },
-  {
-    time: "11:30",
-    initials: "LC",
-    name: "L. Cano",
-    service: "Valoración",
-    gradient: "from-[var(--info-500)] to-[var(--info-700)]",
-  },
-]
-
-type AlertItem = {
-  text: string
-  detail?: string
-  variant: "warning" | "info"
-}
-
-const ALERTS: AlertItem[] = [
-  { text: "Copago pendiente", detail: "J. Tobón", variant: "warning" },
-  { text: "2 valoraciones sin firmar", variant: "info" },
-]
-
-const ALERT_TONE = {
-  warning:
-    "border-warning-soft-border bg-warning-soft text-warning-soft-foreground",
-  info: "border-info-soft-border bg-info-soft text-info-soft-foreground",
-} as const
-
 export default async function DashboardPage() {
   const user = await getCurrentUser()
   if (!user) redirect("/login")
@@ -111,143 +44,194 @@ export default async function DashboardPage() {
     initials: initialsFrom(user.firstName, user.lastName),
   }
 
+  let dashboard: Dashboard | null = null
+  let recent: Patient[] = []
+  let forbidden = false
+  try {
+    ;[dashboard, recent] = await Promise.all([
+      getDashboard(),
+      getPatients({ pageSize: 5 }).then((r) => r.items),
+    ])
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 401) redirect("/logout")
+    if (error instanceof ApiError && error.status === 403) forbidden = true
+    else throw error
+  }
+
   return (
     <SidebarProvider>
       <AppSidebar user={sidebarUser} />
       <SidebarInset>
-        {/* Header sticky con blur · saludo contextual + un solo CTA primario */}
         <header className="sticky top-0 z-10 flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-border bg-background/70 px-4 py-3 backdrop-blur-md sm:px-6">
           <div className="flex items-center gap-2">
             <SidebarTrigger className="-ml-1" />
-            <Separator
-              orientation="vertical"
-              className="mr-1 hidden h-6 sm:block"
-            />
+            <Separator orientation="vertical" className="mr-1 hidden h-6 sm:block" />
             <div>
               <h1 className="text-lg leading-tight font-semibold tracking-tight">
                 {greeting()}, {user.firstName}
               </h1>
               <p className="text-xs text-muted-foreground">
-                Martes 21 de julio · 6 citas hoy
+                Resumen del consultorio
               </p>
             </div>
           </div>
 
           <div className="ml-auto flex items-center gap-2">
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-muted-foreground"
-            >
-              <Search data-icon="inline-start" />
-              <span className="hidden sm:inline">Buscar</span>
-              <kbd className="ml-1 hidden rounded-sm bg-muted px-1.5 font-mono text-[11px] sm:inline">
-                ⌘K
-              </kbd>
-            </Button>
-            <Button variant="ghost" size="icon-sm" aria-label="Notificaciones">
-              <Bell />
-            </Button>
-            <Button size="sm">
-              <Plus data-icon="inline-start" />
-              Nueva cita
+            <Button size="sm" render={<Link href="/patients" />}>
+              <UserPlus data-icon="inline-start" />
+              Pacientes
             </Button>
           </div>
         </header>
 
         <div className="flex flex-1 flex-col gap-4 p-4 sm:p-6">
-          {/* KPIs · máximo 3–4, sin rellenos de color */}
-          <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {KPIS.map((kpi) => (
-              <Card key={kpi.label}>
-                <CardHeader>
-                  <CardDescription className="flex items-center gap-1.5">
-                    <CalendarDays className="size-3.5" />
-                    {kpi.label}
-                  </CardDescription>
-                  <CardTitle className="text-[26px] tracking-tight tabular-nums">
-                    {kpi.value}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className={cnTone(kpi.tone)}>{kpi.trend}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </section>
+          {forbidden ? (
+            <AdminNotice />
+          ) : dashboard ? (
+            <>
+              <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                <Kpi
+                  icon={<CalendarClock className="size-3.5" />}
+                  label="Sesiones hoy"
+                  value={String(dashboard.sessionsToday)}
+                />
+                <Kpi
+                  icon={<Users className="size-3.5" />}
+                  label="Pacientes activos"
+                  value={String(dashboard.activePatients)}
+                  hint={`${dashboard.patients} en total`}
+                />
+                <Kpi
+                  icon={<TrendingUp className="size-3.5" />}
+                  label="Ingresos del mes"
+                  value={money(dashboard.incomeThisMonth)}
+                  tone="success"
+                />
+                <Kpi
+                  icon={<AlertTriangle className="size-3.5" />}
+                  label="Saldo pendiente"
+                  value={money(dashboard.pendingBalance)}
+                  tone={dashboard.pendingBalance > 0 ? "warning" : "muted"}
+                />
+              </section>
 
-          {/* Módulos · jerarquía por tamaño, no por color */}
-          <section className="grid gap-4 lg:grid-cols-[1.2fr_1fr]">
-            {/* Agenda de hoy */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm">Agenda de hoy</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col">
-                {AGENDA.map((appt, index) => (
-                  <div key={appt.time}>
-                    {index > 0 ? <Separator /> : null}
-                    <div className="flex items-center gap-3 py-2.5">
-                      <span className="w-11 font-mono text-[11px] text-bronze-600">
-                        {appt.time}
-                      </span>
-                      <Avatar className="size-7">
-                        <AvatarFallback
-                          className={`bg-gradient-to-br ${appt.gradient} text-[10px] font-semibold text-white`}
-                        >
-                          {appt.initials}
-                        </AvatarFallback>
-                      </Avatar>
-                      <span className="text-sm">
-                        {appt.name}{" "}
-                        <span className="text-muted-foreground">
-                          · {appt.service}
-                        </span>
-                      </span>
-                      {appt.status ? (
-                        <Badge
-                          variant={appt.status.variant}
-                          className="ml-auto"
-                        >
-                          {appt.status.label}
-                        </Badge>
-                      ) : null}
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            {/* Alertas */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm">Alertas</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-2">
-                {ALERTS.map((alert) => (
-                  <div
-                    key={alert.text}
-                    className={`flex items-start gap-2 rounded-md border px-3 py-2.5 text-xs ${ALERT_TONE[alert.variant]}`}
-                  >
-                    <Bell className="mt-0.5 size-3.5 shrink-0" />
-                    <span>
-                      {alert.text}
-                      {alert.detail ? ` · ${alert.detail}` : ""}
-                    </span>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </section>
-
+              <section className="grid gap-4">
+                <Card>
+                  <CardHeader className="flex-row items-center justify-between">
+                    <CardTitle className="text-sm">Pacientes recientes</CardTitle>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-muted-foreground"
+                      render={<Link href="/patients" />}
+                    >
+                      Ver todos
+                      <ArrowRight data-icon="inline-end" />
+                    </Button>
+                  </CardHeader>
+                  <CardContent className="flex flex-col">
+                    {recent.length === 0 ? (
+                      <p className="py-6 text-center text-sm text-muted-foreground">
+                        Aún no hay pacientes registrados.
+                      </p>
+                    ) : (
+                      recent.map((p, index) => (
+                        <div key={p.id}>
+                          {index > 0 ? <Separator /> : null}
+                          <Link
+                            href={`/patients/${p.id}`}
+                            className="flex items-center gap-3 rounded-md py-2.5 transition-colors hover:bg-muted/50"
+                          >
+                            <Avatar className="size-8">
+                              <AvatarFallback className="bg-gradient-to-br from-bronze-300 to-bronze-600 text-[11px] font-semibold text-white">
+                                {initialsFromName(p.fullName)}
+                              </AvatarFallback>
+                            </Avatar>
+                            <div className="min-w-0">
+                              <p className="truncate text-sm font-medium">
+                                {p.fullName}
+                              </p>
+                              <p className="truncate text-xs text-muted-foreground">
+                                Doc. {p.document} · {formatDate(p.createdAt)}
+                              </p>
+                            </div>
+                            <Badge variant="outline" className="ml-auto">
+                              {PATIENT_STATUS_LABELS[p.status]}
+                            </Badge>
+                          </Link>
+                        </div>
+                      ))
+                    )}
+                  </CardContent>
+                </Card>
+              </section>
+            </>
+          ) : null}
         </div>
       </SidebarInset>
     </SidebarProvider>
   )
 }
 
-function cnTone(tone: Kpi["tone"]) {
-  return `flex items-center gap-1 text-[11.5px] ${TREND_TONE[tone]}`
+function Kpi({
+  icon,
+  label,
+  value,
+  hint,
+  tone = "muted",
+}: {
+  icon: React.ReactNode
+  label: string
+  value: string
+  hint?: string
+  tone?: "success" | "warning" | "muted"
+}) {
+  const toneClass = {
+    success: "text-success",
+    warning: "text-warning",
+    muted: "text-muted-foreground",
+  }[tone]
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardDescription className="flex items-center gap-1.5">
+          {icon}
+          {label}
+        </CardDescription>
+        <CardTitle className="text-[26px] tracking-tight tabular-nums">
+          {value}
+        </CardTitle>
+      </CardHeader>
+      {hint ? (
+        <CardContent>
+          <p className={`text-[11.5px] ${toneClass}`}>{hint}</p>
+        </CardContent>
+      ) : null}
+    </Card>
+  )
+}
+
+function AdminNotice() {
+  return (
+    <Card className="mx-auto max-w-lg">
+      <CardHeader className="items-center text-center">
+        <div className="mb-2 flex size-11 items-center justify-center rounded-full bg-warning-soft text-warning-soft-foreground">
+          <ShieldAlert className="size-5" />
+        </div>
+        <CardTitle className="text-base">Acceso restringido</CardTitle>
+        <CardDescription>
+          Tu cuenta no tiene el rol <span className="font-medium">Admin</span>,
+          necesario para ver el consultorio. Un administrador debe asignártelo
+          en la base de datos.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="flex items-center justify-center gap-2 text-xs text-muted-foreground">
+        <Activity className="size-3.5" />
+        Vuelve a iniciar sesión una vez asignado el rol.
+      </CardContent>
+    </Card>
+  )
 }
 
 function initialsFrom(firstName: string, lastName: string) {

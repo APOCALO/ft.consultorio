@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
-import { BirthDatePicker } from "./birthdate-picker"
+import { BirthDatePicker } from "@/components/birthdate-picker"
 
 export function RegisterForm() {
   const [state, formAction, isPending] = useActionState(

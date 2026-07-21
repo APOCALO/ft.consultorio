@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
+import { cookies } from "next/headers"
 import { Inter, Cormorant_Garamond, JetBrains_Mono } from "next/font/google"
 
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { Toaster } from "@/components/ui/sonner"
 import { cn } from "@/lib/utils"
@@ -35,27 +35,30 @@ export const metadata: Metadata = {
     "Gestión clínica de fisioterapia. Tu bienestar es lo más importante.",
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  // Tema por defecto `light`; sólo oscuro si la cookie lo pide. Al fijar la clase
+  // en el SSR no hay parpadeo ni <script> anti-flash.
+  const isDark = (await cookies()).get("theme")?.value === "dark"
+
   return (
     <html
       lang="es"
-      suppressHydrationWarning
+      style={{ colorScheme: isDark ? "dark" : "light" }}
       className={cn(
         "antialiased",
+        isDark && "dark",
         inter.variable,
         cormorant.variable,
         jetbrainsMono.variable,
       )}
     >
       <body>
-        <ThemeProvider>
-          <TooltipProvider delay={300}>{children}</TooltipProvider>
-          <Toaster position="top-center" richColors />
-        </ThemeProvider>
+        <TooltipProvider delay={300}>{children}</TooltipProvider>
+        <Toaster position="top-center" richColors />
       </body>
     </html>
   )

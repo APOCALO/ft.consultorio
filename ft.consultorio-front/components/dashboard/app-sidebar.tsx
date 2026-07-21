@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import {
   CalendarDays,
   LayoutDashboard,
@@ -23,6 +25,7 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { ThemeToggle } from "@/components/theme-toggle"
 import { logoutAction } from "@/lib/auth/actions"
 
 export type SidebarUser = {
@@ -34,13 +37,13 @@ export type SidebarUser = {
 type NavItem = {
   title: string
   icon: LucideIcon
-  active?: boolean
+  href?: string
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { title: "Panel", icon: LayoutDashboard, active: true },
+  { title: "Panel", icon: LayoutDashboard, href: "/" },
+  { title: "Pacientes", icon: Users, href: "/patients" },
   { title: "Agenda", icon: CalendarDays },
-  { title: "Pacientes", icon: Users },
   { title: "Caja", icon: Wallet },
   { title: "Ajustes", icon: Settings },
 ]
@@ -72,6 +75,14 @@ function BrandMark() {
 }
 
 export function AppSidebar({ user }: { user: SidebarUser }) {
+  const pathname = usePathname()
+
+  function isActive(href?: string) {
+    if (!href) return false
+    if (href === "/") return pathname === "/"
+    return pathname === href || pathname.startsWith(`${href}/`)
+  }
+
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
@@ -87,23 +98,45 @@ export function AppSidebar({ user }: { user: SidebarUser }) {
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
-              {NAV_ITEMS.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    isActive={item.active}
-                    tooltip={item.title}
-                  >
-                    <item.icon />
-                    <span>{item.title}</span>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
+              {NAV_ITEMS.map((item) =>
+                item.href ? (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      isActive={isActive(item.href)}
+                      tooltip={item.title}
+                      render={
+                        <Link href={item.href}>
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </Link>
+                      }
+                    />
+                  </SidebarMenuItem>
+                ) : (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      tooltip={`${item.title} · próximamente`}
+                      disabled
+                    >
+                      <item.icon />
+                      <span>{item.title}</span>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ),
+              )}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
       <SidebarFooter>
+        <div className="flex items-center justify-between px-2 group-data-[collapsible=icon]:justify-center">
+          <span className="text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">
+            Tema
+          </span>
+          <ThemeToggle />
+        </div>
+
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" tooltip={user.fullName}>
