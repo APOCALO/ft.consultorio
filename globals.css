@@ -1,0 +1,264 @@
+/* ============================================================================
+   LAURA SALDARRIAGA · FISIOTERAPEUTA
+   Design System — globals.css
+   Tailwind CSS v4 + shadcn/ui + Radix + Lucide
+   ----------------------------------------------------------------------------
+   Copia este archivo como app/globals.css. Los componentes de shadcn/ui
+   funcionan sin cambios: consumen los tokens semánticos de abajo.
+   ============================================================================ */
+
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+/* ----------------------------------------------------------------------------
+   1. TOKENS PRIMITIVOS — escalas de marca (no usar directo en componentes,
+   salvo casos puntuales como gráficos o degradados de marca).
+   ---------------------------------------------------------------------------- */
+:root {
+  /* Cobre / Bronze — Primary */
+  --bronze-50:#FAF6F0; --bronze-100:#F3E9DB; --bronze-200:#E6D0B4; --bronze-300:#D6B187;
+  --bronze-400:#C6935F; --bronze-500:#B67A44; --bronze-600:#9C6438; --bronze-700:#7D4F2E;
+  --bronze-800:#613E27; --bronze-900:#4A3020; --bronze-950:#291A11;
+
+  /* Stone — Neutral cálido */
+  --stone-50:#FAFAF9; --stone-100:#F4F3F1; --stone-200:#E8E6E2; --stone-300:#D5D2CC;
+  --stone-400:#B0ABA3; --stone-500:#8A857C; --stone-600:#6B665E; --stone-700:#514D46;
+  --stone-800:#3A3733; --stone-900:#262320; --stone-950:#17150F;
+
+  /* Orquídea / Plum — Secondary */
+  --plum-50:#FAF6FB; --plum-100:#F3E9F6; --plum-200:#E6D2EC; --plum-300:#D2ADDD;
+  --plum-400:#B87EC9; --plum-500:#9E58B4; --plum-600:#85419B; --plum-700:#6B347C;
+  --plum-800:#542A61; --plum-900:#43234D; --plum-950:#2A1530;
+
+  /* Oro metálico — acento premium / decorativo */
+  --gold-300:#EFD79A; --gold-400:#E3C36B; --gold-500:#C9A24B; --gold-600:#A98436;
+
+  /* Semánticos base */
+  --success-50:#EEF7F1; --success-100:#D6ECDE; --success-500:#3E9B6B; --success-600:#2F8557; --success-700:#266B47; --success-900:#1B4530;
+  --warning-50:#FEF8EC; --warning-100:#FBEDCB; --warning-500:#E0A32E; --warning-600:#C08420; --warning-700:#986619; --warning-900:#5E3F12;
+  --error-50:#FDF2F1;   --error-100:#FADAD7;   --error-500:#D24B43;   --error-600:#B93A34;   --error-700:#97302B;   --error-900:#5E211E;
+  --info-50:#F0F4F8;    --info-100:#DBE6F0;    --info-500:#4F7CAC;    --info-600:#3E6693;    --info-700:#325274;    --info-900:#223850;
+}
+
+/* ----------------------------------------------------------------------------
+   2. TOKENS SEMÁNTICOS — LIGHT (los que consumen los componentes)
+   ---------------------------------------------------------------------------- */
+:root {
+  --radius: 0.625rem; /* 10px base; shadcn deriva sm/md/lg/xl */
+
+  --background:#FBFAF8;            --foreground:#262320;
+  --card:#FFFFFF;                 --card-foreground:#262320;
+  --popover:#FFFFFF;              --popover-foreground:#262320;
+  --primary:#9C6438;              --primary-foreground:#FFFFFF;
+  --secondary:#F4F3F1;            --secondary-foreground:#3A3733;
+  --muted:#F4F3F1;                --muted-foreground:#6B665E;
+  --accent:#F3E9DB;               --accent-foreground:#7D4F2E;
+  --destructive:#D24B43;          --destructive-foreground:#FFFFFF;
+  --success:#2F8557;              --success-foreground:#FFFFFF;
+  --warning:#C08420;              --warning-foreground:#FFFFFF;
+  --info:#3E6693;                 --info-foreground:#FFFFFF;
+  --border:#E8E6E2;
+  --input:#E8E6E2;
+  --ring:#9C6438;
+
+  /* Sidebar */
+  --sidebar:#F7F5F2;              --sidebar-foreground:#514D46;
+  --sidebar-primary:#9C6438;      --sidebar-primary-foreground:#FFFFFF;
+  --sidebar-accent:#EFEBE4;       --sidebar-accent-foreground:#7D4F2E;
+  --sidebar-border:#E8E6E2;       --sidebar-ring:#9C6438;
+
+  /* Gráficos */
+  --chart-1:#B67A44; --chart-2:#9E58B4; --chart-3:#4F7CAC; --chart-4:#3E9B6B; --chart-5:#E0A32E;
+
+  /* Sombras — tinte cálido (bronze-950) */
+  --shadow-xs:0 1px 2px 0 rgba(41,26,17,.04);
+  --shadow-sm:0 1px 3px 0 rgba(41,26,17,.06), 0 1px 2px -1px rgba(41,26,17,.04);
+  --shadow-md:0 4px 8px -2px rgba(41,26,17,.08), 0 2px 4px -2px rgba(41,26,17,.05);
+  --shadow-lg:0 12px 20px -6px rgba(41,26,17,.10), 0 4px 8px -4px rgba(41,26,17,.06);
+  --shadow-xl:0 24px 40px -12px rgba(41,26,17,.14), 0 8px 16px -8px rgba(41,26,17,.08);
+  --shadow-2xl:0 40px 64px -20px rgba(41,26,17,.22);
+  --shadow-inner:inset 0 1px 2px 0 rgba(41,26,17,.06);
+}
+
+/* ----------------------------------------------------------------------------
+   3. TOKENS SEMÁNTICOS — DARK
+   El oscuro no invierte: usa superficies cálidas escalonadas y cobre aclarado.
+   ---------------------------------------------------------------------------- */
+.dark {
+  --background:#16140F;            --foreground:#EDEBE6;
+  --card:#201D18;                 --card-foreground:#EDEBE6;
+  --popover:#201D18;              --popover-foreground:#EDEBE6;
+  --primary:#C6935F;              --primary-foreground:#2A1B10;
+  --secondary:#2A2621;            --secondary-foreground:#EDEBE6;
+  --muted:#2A2621;                --muted-foreground:#A8A29A;
+  --accent:#3A2E20;               --accent-foreground:#E6D0B4;
+  --destructive:#E06B63;          --destructive-foreground:#1A0E0D;
+  --success:#4FB884;              --success-foreground:#0E2418;
+  --warning:#E0A32E;              --warning-foreground:#241A08;
+  --info:#6E9BC9;                 --info-foreground:#0C1826;
+  --border:#322E28;
+  --input:#322E28;
+  --ring:#C6935F;
+
+  --sidebar:#1B1914;              --sidebar-foreground:#B0ABA3;
+  --sidebar-primary:#C6935F;      --sidebar-primary-foreground:#2A1B10;
+  --sidebar-accent:#2A241C;       --sidebar-accent-foreground:#E6D0B4;
+  --sidebar-border:#322E28;       --sidebar-ring:#C6935F;
+
+  --chart-1:#D6B187; --chart-2:#C99BDB; --chart-3:#82ACD6; --chart-4:#6FCB9A; --chart-5:#E8BC63;
+
+  /* Sombras — más neutras en oscuro; la elevación la lleva el color de superficie */
+  --shadow-xs:0 1px 2px 0 rgba(0,0,0,.30);
+  --shadow-sm:0 1px 3px 0 rgba(0,0,0,.40), 0 1px 2px -1px rgba(0,0,0,.30);
+  --shadow-md:0 4px 8px -2px rgba(0,0,0,.45), 0 2px 4px -2px rgba(0,0,0,.30);
+  --shadow-lg:0 12px 20px -6px rgba(0,0,0,.55), 0 4px 8px -4px rgba(0,0,0,.35);
+  --shadow-xl:0 24px 40px -12px rgba(0,0,0,.60), 0 8px 16px -8px rgba(0,0,0,.40);
+  --shadow-2xl:0 40px 64px -20px rgba(0,0,0,.70);
+  --shadow-inner:inset 0 1px 2px 0 rgba(0,0,0,.40);
+}
+
+/* ----------------------------------------------------------------------------
+   4. MAPEO A UTILIDADES TAILWIND v4 (@theme inline)
+   Habilita bg-primary, text-muted-foreground, border-border, rounded-lg, etc.
+   ---------------------------------------------------------------------------- */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* Escalas completas expuestas como utilidades (bg-bronze-500, text-plum-700…) */
+  --color-bronze-50: var(--bronze-50);   --color-bronze-100: var(--bronze-100);
+  --color-bronze-200: var(--bronze-200); --color-bronze-300: var(--bronze-300);
+  --color-bronze-400: var(--bronze-400); --color-bronze-500: var(--bronze-500);
+  --color-bronze-600: var(--bronze-600); --color-bronze-700: var(--bronze-700);
+  --color-bronze-800: var(--bronze-800); --color-bronze-900: var(--bronze-900);
+  --color-bronze-950: var(--bronze-950);
+  --color-plum-50: var(--plum-50);   --color-plum-100: var(--plum-100);
+  --color-plum-200: var(--plum-200); --color-plum-300: var(--plum-300);
+  --color-plum-400: var(--plum-400); --color-plum-500: var(--plum-500);
+  --color-plum-600: var(--plum-600); --color-plum-700: var(--plum-700);
+  --color-plum-800: var(--plum-800); --color-plum-900: var(--plum-900);
+  --color-plum-950: var(--plum-950);
+  --color-gold-400: var(--gold-400); --color-gold-500: var(--gold-500);
+
+  /* Radios */
+  --radius-xs: calc(var(--radius) - 6px);   /* 4px  */
+  --radius-sm: calc(var(--radius) - 4px);   /* 6px  */
+  --radius-md: calc(var(--radius) - 2px);   /* 8px  */
+  --radius-lg: var(--radius);               /* 10px */
+  --radius-xl: calc(var(--radius) + 4px);   /* 14px */
+  --radius-2xl: calc(var(--radius) + 10px); /* 20px */
+
+  /* Sombras */
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
+  --shadow-inner: var(--shadow-inner);
+
+  /* Tipografía */
+  --font-sans: "Geist", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, monospace;
+
+  /* Tamaños de fuente del sistema */
+  --text-caption: 0.75rem;   --text-caption--line-height: 1.4;   /* 12 */
+  --text-small: 0.8125rem;   --text-small--line-height: 1.5;     /* 13 */
+  --text-body: 0.875rem;     --text-body--line-height: 1.55;     /* 14 */
+  --text-body-lg: 1.0625rem; --text-body-lg--line-height: 1.6;   /* 17 */
+  --text-h4: 1.25rem;        --text-h4--line-height: 1.3;        /* 20 */
+  --text-h3: 1.5rem;         --text-h3--line-height: 1.25;       /* 24 */
+  --text-h2: 1.875rem;       --text-h2--line-height: 1.2;        /* 30 */
+  --text-h1: 2.25rem;        --text-h1--line-height: 1.15;       /* 36 */
+  --text-display: 3.5rem;    --text-display--line-height: 1.02;  /* 56 */
+
+  /* Motion */
+  --ease-standard: cubic-bezier(.2,0,0,1);
+  --ease-out: cubic-bezier(.16,1,.3,1);
+  --ease-in-out: cubic-bezier(.65,0,.35,1);
+}
+
+/* ----------------------------------------------------------------------------
+   5. CAPA BASE
+   ---------------------------------------------------------------------------- */
+@layer base {
+  * {
+    border-color: var(--border);
+    outline-color: color-mix(in srgb, var(--ring) 50%, transparent);
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "cv02","cv03","cv04","cv11";
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  /* Foco accesible por teclado (WCAG AA · 3:1) */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+  ::selection { background: var(--bronze-200); color: var(--bronze-900); }
+  .dark ::selection { background: var(--bronze-800); color: var(--bronze-50); }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: .01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ----------------------------------------------------------------------------
+   NOTAS DE IMPLEMENTACIÓN
+   ----------------------------------------------------------------------------
+   · Fuentes: instala `geist` (npm i geist) para Geist Sans/Mono en Next.js.
+     Para la serif de marca, importa "Cormorant Garamond" desde next/font/google.
+   · Modo oscuro: alterna la clase `dark` en <html> (p. ej. con next-themes).
+   · shadcn/ui: al inicializar, elige "CSS variables"; este archivo reemplaza
+     el bloque de variables generado por defecto.
+   · Componentes shadcn ya usan bg-primary, text-muted-foreground, border,
+     ring, rounded-lg, etc. — quedan retematizados sin tocar su marcado.
+   ---------------------------------------------------------------------------- */

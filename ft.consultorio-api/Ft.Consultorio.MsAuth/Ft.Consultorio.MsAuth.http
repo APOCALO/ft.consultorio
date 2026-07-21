@@ -1,0 +1,6 @@
+@Ft.Consultorio.MsAuth_HostAddress = http://localhost:5103
+
+GET {{Ft.Consultorio.MsAuth_HostAddress}}/health
+Accept: application/json
+
+###

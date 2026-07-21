@@ -1,0 +1,4 @@
+interface:
+  display_name: "FtConsultorio Project Context"
+  short_description: "Architecture and conventions for FtConsultorio Aspire"
+  default_prompt: "Use $project-context to onboard me to this FtConsultorio Aspire repo and map the exact files I should edit for my task."

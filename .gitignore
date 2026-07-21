@@ -1,0 +1,55 @@
+# =============================================================================
+# ft.consultorio — .gitignore global del monorepo
+# Reglas transversales. Cada subproyecto mantiene su propio .gitignore
+# (ft.consultorio-front/.gitignore, ft.consultorio-api/.gitignore).
+# =============================================================================
+
+# --- Sistema operativo ---
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# --- Editores / IDEs ---
+.vscode/
+.idea/
+.vs/
+.fleet/
+*.swp
+*.swo
+*~
+
+# --- Logs y temporales ---
+*.log
+logs/
+tmp/
+temp/
+*.pid
+*.seed
+
+# --- Variables de entorno / secretos ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets.json
+
+# --- Node / JavaScript (transversal, por si hay tooling en la raíz) ---
+node_modules/
+.pnpm-store/
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
+
+# --- .NET (transversal) ---
+[Bb]in/
+[Oo]bj/
+
+# --- Backup de migración a monorepo (repos git anidados movidos aparte) ---
+*.git.bak-monorepo/
+.git.bak-monorepo/

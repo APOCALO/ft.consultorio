@@ -1,0 +1,18 @@
+<Solution>
+  <Folder Name="/aspire/">
+    <Project Path="Ft.Consultorio.AppHost/Ft.Consultorio.AppHost.csproj" />
+  </Folder>
+  <Folder Name="/shared/">
+    <Project Path="Ft.Consultorio.SharedKernel/Ft.Consultorio.SharedKernel.csproj" />
+    <Project Path="Ft.Consultorio.BuildingBlocks.Persistence/Ft.Consultorio.BuildingBlocks.Persistence.csproj" />
+    <Project Path="Ft.Consultorio.BuildingBlocks.Cqrs/Ft.Consultorio.BuildingBlocks.Cqrs.csproj" />
+    <Project Path="Ft.Consultorio.BuildingBlocks.Caching/Ft.Consultorio.BuildingBlocks.Caching.csproj" />
+    <Project Path="Ft.Consultorio.BuildingBlocks.Storage/Ft.Consultorio.BuildingBlocks.Storage.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="Ft.Consultorio.Gateway/Ft.Consultorio.Gateway.csproj" />
+    <Project Path="Ft.Consultorio.ServiceDefaults/Ft.Consultorio.ServiceDefaults.csproj" />
+    <Project Path="Ft.Consultorio.MsAuth/Ft.Consultorio.MsAuth.csproj" />
+    <Project Path="Ft.Consultorio.MsMedicalRecords/Ft.Consultorio.MsMedicalRecords.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,1300 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Laura Saldarriaga · Brand Book & Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;450;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   LAURA SALDARRIAGA · SISTEMA DE DISEÑO — TOKENS (LIGHT)
+   El documento está construido con el mismo sistema que documenta.
+   ============================================================ */
+:root{
+  /* ---- Escala Cobre / Bronze (Primary) ---- */
+  --bronze-50:#FAF6F0; --bronze-100:#F3E9DB; --bronze-200:#E6D0B4; --bronze-300:#D6B187;
+  --bronze-400:#C6935F; --bronze-500:#B67A44; --bronze-600:#9C6438; --bronze-700:#7D4F2E;
+  --bronze-800:#613E27; --bronze-900:#4A3020; --bronze-950:#291A11;
+  /* ---- Escala Stone (Neutral cálido) ---- */
+  --stone-50:#FAFAF9; --stone-100:#F4F3F1; --stone-200:#E8E6E2; --stone-300:#D5D2CC;
+  --stone-400:#B0ABA3; --stone-500:#8A857C; --stone-600:#6B665E; --stone-700:#514D46;
+  --stone-800:#3A3733; --stone-900:#262320; --stone-950:#17150F;
+  /* ---- Escala Orquídea / Plum (Secondary) ---- */
+  --plum-50:#FAF6FB; --plum-100:#F3E9F6; --plum-200:#E6D2EC; --plum-300:#D2ADDD;
+  --plum-400:#B87EC9; --plum-500:#9E58B4; --plum-600:#85419B; --plum-700:#6B347C;
+  --plum-800:#542A61; --plum-900:#43234D; --plum-950:#2A1530;
+  /* ---- Oro metálico (acento premium/decorativo) ---- */
+  --gold-300:#EFD79A; --gold-400:#E3C36B; --gold-500:#C9A24B; --gold-600:#A98436;
+  /* ---- Semánticos: escalas ---- */
+  --success-50:#EEF7F1; --success-100:#D6ECDE; --success-500:#3E9B6B; --success-600:#2F8557; --success-700:#266B47; --success-900:#1B4530;
+  --warning-50:#FEF8EC; --warning-100:#FBEDCB; --warning-500:#E0A32E; --warning-600:#C08420; --warning-700:#986619; --warning-900:#5E3F12;
+  --error-50:#FDF2F1;   --error-100:#FADAD7;   --error-500:#D24B43;   --error-600:#B93A34;   --error-700:#97302B;   --error-900:#5E211E;
+  --info-50:#F0F4F8;    --info-100:#DBE6F0;    --info-500:#4F7CAC;    --info-600:#3E6693;    --info-700:#325274;    --info-900:#223850;
+
+  /* ---- Tokens semánticos (shadcn / UI) — LIGHT ---- */
+  --background:#FBFAF8; --foreground:#262320;
+  --card:#FFFFFF; --card-foreground:#262320;
+  --popover:#FFFFFF; --popover-foreground:#262320;
+  --primary:#9C6438; --primary-foreground:#FFFFFF;
+  --secondary:#F4F3F1; --secondary-foreground:#3A3733;
+  --muted:#F4F3F1; --muted-foreground:#6B665E;
+  --accent:#F3E9DB; --accent-foreground:#7D4F2E;
+  --destructive:#D24B43; --destructive-foreground:#FFFFFF;
+  --success:#2F8557; --warning:#C08420; --info:#3E6693;
+  --border:#E8E6E2; --input:#E8E6E2; --ring:#9C6438;
+  --sidebar:#F7F5F2; --sidebar-foreground:#514D46; --sidebar-primary:#9C6438;
+  --sidebar-accent:#EFEBE4; --sidebar-border:#E8E6E2;
+
+  /* ---- Radios ---- */
+  --radius-xs:4px; --radius-sm:6px; --radius-md:8px; --radius-lg:10px;
+  --radius-xl:14px; --radius-2xl:20px; --radius-full:9999px; --radius:10px;
+
+  /* ---- Sombras (tinte cálido bronze-950) ---- */
+  --shadow-xs:0 1px 2px 0 rgba(41,26,17,.04);
+  --shadow-sm:0 1px 3px 0 rgba(41,26,17,.06), 0 1px 2px -1px rgba(41,26,17,.04);
+  --shadow-md:0 4px 8px -2px rgba(41,26,17,.08), 0 2px 4px -2px rgba(41,26,17,.05);
+  --shadow-lg:0 12px 20px -6px rgba(41,26,17,.10), 0 4px 8px -4px rgba(41,26,17,.06);
+  --shadow-xl:0 24px 40px -12px rgba(41,26,17,.14), 0 8px 16px -8px rgba(41,26,17,.08);
+  --shadow-2xl:0 40px 64px -20px rgba(41,26,17,.22);
+  --shadow-inner:inset 0 1px 2px 0 rgba(41,26,17,.06);
+
+  /* ---- Tipografía ---- */
+  --font-sans:"Inter","Geist",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --font-serif:"Cormorant Garamond",Georgia,serif;
+  --font-mono:"JetBrains Mono","Geist Mono",ui-monospace,monospace;
+
+  /* ---- Motion ---- */
+  --dur-fast:120ms; --dur-base:180ms; --dur-mod:240ms; --dur-slow:320ms;
+  --ease-standard:cubic-bezier(.2,0,0,1);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-in-out:cubic-bezier(.65,0,.35,1);
+}
+/* ===================== DARK ===================== */
+.dark, [data-theme="dark"]{
+  --background:#16140F; --foreground:#EDEBE6;
+  --card:#201D18; --card-foreground:#EDEBE6;
+  --popover:#201D18; --popover-foreground:#EDEBE6;
+  --primary:#C6935F; --primary-foreground:#2A1B10;
+  --secondary:#2A2621; --secondary-foreground:#EDEBE6;
+  --muted:#2A2621; --muted-foreground:#A8A29A;
+  --accent:#3A2E20; --accent-foreground:#E6D0B4;
+  --destructive:#E06B63; --destructive-foreground:#1A0E0D;
+  --success:#4FB884; --warning:#E0A32E; --info:#6E9BC9;
+  --border:#322E28; --input:#322E28; --ring:#C6935F;
+  --sidebar:#1B1914; --sidebar-foreground:#B0ABA3; --sidebar-primary:#C6935F;
+  --sidebar-accent:#2A241C; --sidebar-border:#322E28;
+  --shadow-xs:0 1px 2px 0 rgba(0,0,0,.30);
+  --shadow-sm:0 1px 3px 0 rgba(0,0,0,.40),0 1px 2px -1px rgba(0,0,0,.30);
+  --shadow-md:0 4px 8px -2px rgba(0,0,0,.45),0 2px 4px -2px rgba(0,0,0,.30);
+  --shadow-lg:0 12px 20px -6px rgba(0,0,0,.55),0 4px 8px -4px rgba(0,0,0,.35);
+  --shadow-xl:0 24px 40px -12px rgba(0,0,0,.60);
+  --shadow-2xl:0 40px 64px -20px rgba(0,0,0,.70);
+}
+
+/* ============================================================
+   BASE / RESET
+   ============================================================ */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font-sans);
+  background:var(--background);
+  color:var(--foreground);
+  line-height:1.55;
+  font-size:15px;
+  font-feature-settings:"cv02","cv03","cv04","cv11";
+  -webkit-font-smoothing:antialiased;
+  transition:background var(--dur-base) var(--ease-standard), color var(--dur-base) var(--ease-standard);
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+::selection{background:var(--bronze-200);color:var(--bronze-900)}
+
+/* ============================================================
+   LAYOUT DE DOCUMENTACIÓN
+   ============================================================ */
+.shell{display:grid;grid-template-columns:264px 1fr;min-height:100vh}
+.nav{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:var(--sidebar);border-right:1px solid var(--sidebar-border);
+  padding:26px 18px 40px;
+}
+.nav-brand{display:flex;align-items:center;gap:11px;padding:0 8px 22px}
+.nav-mark{width:34px;height:34px;flex:none}
+.nav-brand-t{font-family:var(--font-serif);font-size:19px;font-weight:600;letter-spacing:.01em;line-height:1;color:var(--foreground)}
+.nav-brand-s{font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted-foreground);margin-top:3px}
+.nav-group{margin-top:18px}
+.nav-group-t{font-size:10.5px;font-weight:600;letter-spacing:.13em;text-transform:uppercase;color:var(--muted-foreground);padding:0 8px 7px}
+.nav a{
+  display:flex;gap:9px;align-items:center;
+  padding:6.5px 8px;border-radius:var(--radius-sm);
+  font-size:13.5px;color:var(--sidebar-foreground);
+  transition:background var(--dur-fast) var(--ease-standard),color var(--dur-fast) var(--ease-standard);
+}
+.nav a:hover{background:var(--sidebar-accent);color:var(--foreground)}
+.nav a .n{font-family:var(--font-mono);font-size:10.5px;color:var(--bronze-500);width:20px;flex:none}
+
+.main{min-width:0;max-width:1080px;padding:0 clamp(20px,5vw,72px) 120px}
+.section{padding-top:96px;scroll-margin-top:24px}
+.section:first-child{padding-top:0}
+
+/* --- Eyebrow / titles --- */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--bronze-600);margin-bottom:16px;
+}
+.eyebrow::before{content:"";width:22px;height:1px;background:var(--bronze-400)}
+h1.disp{font-family:var(--font-serif);font-weight:600;font-size:clamp(40px,7vw,68px);line-height:1.02;letter-spacing:-.01em}
+h2.title{font-size:clamp(26px,3.6vw,34px);font-weight:600;letter-spacing:-.018em;line-height:1.15;margin-bottom:8px}
+h3.sub{font-size:19px;font-weight:600;letter-spacing:-.01em;margin:36px 0 14px}
+h4.min{font-size:14px;font-weight:600;letter-spacing:.005em;margin:26px 0 12px;color:var(--foreground)}
+.lead{font-size:17px;line-height:1.6;color:var(--muted-foreground);max-width:64ch}
+p{max-width:70ch;color:var(--stone-700)}
+.dark p{color:var(--stone-300)}
+p+p{margin-top:12px}
+.muted{color:var(--muted-foreground)}
+strong{font-weight:600;color:var(--foreground)}
+code.inline{font-family:var(--font-mono);font-size:.86em;background:var(--muted);color:var(--bronze-700);padding:2px 6px;border-radius:var(--radius-xs);border:1px solid var(--border)}
+.dark code.inline{color:var(--bronze-300)}
+.divider{height:1px;background:var(--border);margin:0}
+.rule{border:none;height:1px;background:var(--border);margin:40px 0}
+
+/* --- Grids & cards --- */
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media(max-width:920px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+.panel{
+  background:var(--card);border:1px solid var(--border);border-radius:var(--radius-xl);
+  padding:22px;box-shadow:var(--shadow-xs);
+}
+.panel h4.min:first-child{margin-top:0}
+
+/* --- Tables --- */
+table.spec{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+table.spec th{
+  text-align:left;font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted-foreground);padding:9px 12px;border-bottom:1px solid var(--border);
+}
+table.spec td{padding:10px 12px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--stone-700)}
+.dark table.spec td{color:var(--stone-300)}
+table.spec tr:last-child td{border-bottom:none}
+table.spec td.mono,table.spec td .mono{font-family:var(--font-mono);font-size:12px;color:var(--bronze-700)}
+.dark table.spec td.mono{color:var(--bronze-300)}
+.tablewrap{border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;background:var(--card)}
+
+/* --- Header bar --- */
+.topbar{
+  position:sticky;top:0;z-index:20;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 0;margin-bottom:8px;
+  background:color-mix(in srgb,var(--background) 86%, transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--border);
+}
+.pill{
+  display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:500;
+  padding:6px 12px;border-radius:var(--radius-full);border:1px solid var(--border);
+  background:var(--card);color:var(--muted-foreground);cursor:pointer;
+  transition:all var(--dur-fast) var(--ease-standard);
+}
+.pill:hover{border-color:var(--bronze-300);color:var(--foreground)}
+
+/* ============================================================
+   ÁTOMOS DEL SISTEMA (para demostraciones vivas)
+   ============================================================ */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:inherit;font-size:14px;font-weight:500;line-height:1;
+  height:38px;padding:0 16px;border-radius:var(--radius-md);
+  border:1px solid transparent;cursor:pointer;white-space:nowrap;
+  transition:background var(--dur-fast) var(--ease-standard),
+             border-color var(--dur-fast) var(--ease-standard),
+             box-shadow var(--dur-fast) var(--ease-standard),
+             transform var(--dur-fast) var(--ease-standard);
+}
+.btn:active{transform:translateY(.5px)}
+.btn:focus-visible{outline:2px solid var(--ring);outline-offset:2px}
+.btn-primary{background:var(--primary);color:var(--primary-foreground);box-shadow:var(--shadow-xs)}
+.btn-primary:hover{background:var(--bronze-700)}
+.dark .btn-primary:hover{background:var(--bronze-300)}
+.btn-secondary{background:var(--secondary);color:var(--secondary-foreground);border-color:var(--border)}
+.btn-secondary:hover{background:var(--stone-200);border-color:var(--stone-300)}
+.dark .btn-secondary:hover{background:#332f29}
+.btn-ghost{background:transparent;color:var(--foreground)}
+.btn-ghost:hover{background:var(--accent);color:var(--accent-foreground)}
+.btn-outline{background:transparent;color:var(--foreground);border-color:var(--border)}
+.btn-outline:hover{background:var(--accent);border-color:var(--bronze-300)}
+.btn-destructive{background:var(--destructive);color:#fff}
+.btn-destructive:hover{filter:brightness(.94)}
+.btn-sm{height:32px;padding:0 12px;font-size:13px;border-radius:var(--radius-sm)}
+.btn-lg{height:44px;padding:0 22px;font-size:15px}
+.btn[disabled]{opacity:.5;pointer-events:none}
+
+.input{
+  height:38px;width:100%;padding:0 12px;font-size:14px;font-family:inherit;
+  background:var(--card);color:var(--foreground);
+  border:1px solid var(--input);border-radius:var(--radius-md);
+  transition:border-color var(--dur-fast) var(--ease-standard),box-shadow var(--dur-fast) var(--ease-standard);
+}
+.input::placeholder{color:var(--muted-foreground)}
+.input:focus{outline:none;border-color:var(--bronze-500);box-shadow:0 0 0 3px color-mix(in srgb,var(--bronze-500) 22%,transparent)}
+.input.err{border-color:var(--destructive)}
+.input.err:focus{box-shadow:0 0 0 3px color-mix(in srgb,var(--destructive) 22%,transparent)}
+.field-label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:var(--foreground)}
+.field-hint{font-size:12px;color:var(--muted-foreground);margin-top:6px}
+.field-err{font-size:12px;color:var(--destructive);margin-top:6px}
+
+.badge{
+  display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:500;line-height:1;
+  padding:4px 9px;border-radius:var(--radius-full);border:1px solid transparent;
+}
+.badge .dot{width:6px;height:6px;border-radius:50%}
+.badge-neutral{background:var(--muted);color:var(--muted-foreground);border-color:var(--border)}
+.badge-primary{background:var(--bronze-100);color:var(--bronze-700);border-color:var(--bronze-200)}
+.dark .badge-primary{background:#3a2e20;color:var(--bronze-300);border-color:#4a3a28}
+.badge-success{background:var(--success-50);color:var(--success-700);border-color:var(--success-100)}
+.badge-warning{background:var(--warning-50);color:var(--warning-700);border-color:var(--warning-100)}
+.badge-error{background:var(--error-50);color:var(--error-700);border-color:var(--error-100)}
+.badge-info{background:var(--info-50);color:var(--info-700);border-color:var(--info-100)}
+.dark .badge-success{background:#16281d;color:#8fd8ae;border-color:#234a34}
+.dark .badge-warning{background:#2b2210;color:#f0cd7c;border-color:#4a3a19}
+.dark .badge-error{background:#2b1614;color:#f0a39c;border-color:#4a2622}
+.dark .badge-info{background:#141f2b;color:#a3c4e6;border-color:#28405a}
+
+.chip{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--card);font-size:13px}
+
+/* --- Swatch system --- */
+.scale{display:grid;grid-template-columns:repeat(11,1fr);border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border)}
+.scale .sw{aspect-ratio:1/1.15;display:flex;flex-direction:column;justify-content:flex-end;padding:8px 7px;font-size:10px;font-family:var(--font-mono)}
+.scale .sw .n{font-weight:600;opacity:.9}
+.scale .sw .h{font-size:8.5px;opacity:.72;margin-top:2px}
+@media(max-width:720px){.scale{grid-template-columns:repeat(6,1fr)}}
+.tokrow{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--border);font-size:13px}
+.tokrow:last-child{border-bottom:none}
+.tokrow .box{width:34px;height:34px;border-radius:var(--radius-sm);border:1px solid var(--border);flex:none}
+.tokrow .nm{font-family:var(--font-mono);font-size:12px;color:var(--foreground);min-width:190px}
+.tokrow .hx{font-family:var(--font-mono);font-size:12px;color:var(--muted-foreground)}
+.tokrow .use{color:var(--muted-foreground);margin-left:auto;text-align:right;font-size:12.5px}
+@media(max-width:720px){.tokrow{flex-wrap:wrap}.tokrow .use{margin-left:46px;text-align:left;width:100%}}
+
+/* --- Type specimen --- */
+.spec-row{display:grid;grid-template-columns:120px 1fr;gap:20px;padding:18px 0;border-bottom:1px solid var(--border);align-items:baseline}
+.spec-row:last-child{border-bottom:none}
+.spec-meta{font-family:var(--font-mono);font-size:11px;color:var(--muted-foreground);line-height:1.7}
+.spec-meta b{color:var(--bronze-600);font-weight:500}
+@media(max-width:720px){.spec-row{grid-template-columns:1fr;gap:6px}}
+
+/* --- Shadow / radius demos --- */
+.demo-tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+@media(max-width:920px){.demo-tiles{grid-template-columns:repeat(2,1fr)}}
+.tile{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);height:96px;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11px;color:var(--muted-foreground)}
+
+/* --- Mockups --- */
+.mock{border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;background:var(--card);box-shadow:var(--shadow-md)}
+.mock-topbar{display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid var(--border);background:var(--sidebar)}
+.dot3{display:flex;gap:6px}.dot3 i{width:10px;height:10px;border-radius:50%;background:var(--stone-300);display:block}
+.kpi{border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px;background:var(--card)}
+.kpi .lbl{font-size:12px;color:var(--muted-foreground);display:flex;align-items:center;gap:6px}
+.kpi .val{font-size:26px;font-weight:600;letter-spacing:-.02em;margin-top:8px}
+.kpi .trend{font-size:11.5px;margin-top:4px}
+
+.callout{border-left:3px solid var(--bronze-500);background:var(--bronze-50);padding:14px 16px;border-radius:0 var(--radius-md) var(--radius-md) 0;font-size:13.5px;color:var(--bronze-900)}
+.dark .callout{background:#241c12;color:var(--bronze-200)}
+.callout.plum{border-color:var(--plum-500);background:var(--plum-50);color:var(--plum-900)}
+.dark .callout.plum{background:#221528;color:var(--plum-200)}
+.do,.dont{padding:14px 16px;border-radius:var(--radius-md);font-size:13px;border:1px solid var(--border)}
+.do{background:var(--success-50);border-color:var(--success-100);color:var(--success-900)}
+.dont{background:var(--error-50);border-color:var(--error-100);color:var(--error-900)}
+.dark .do{background:#16281d;color:#bfe6cf;border-color:#234a34}
+.dark .dont{background:#2b1614;color:#e6bfb9;border-color:#4a2622}
+.do b,.dont b{display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.08em;font-size:10.5px}
+
+pre.code{
+  background:var(--stone-950);color:#E8E6E2;border-radius:var(--radius-lg);
+  padding:18px 20px;overflow-x:auto;font-family:var(--font-mono);font-size:12.5px;line-height:1.7;
+  border:1px solid var(--stone-800);
+}
+pre.code .c{color:var(--stone-500)}
+pre.code .k{color:var(--bronze-300)}
+pre.code .v{color:#c9d6a5}
+.icons-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:12px}
+.icon-cell{display:flex;flex-direction:column;align-items:center;gap:9px;padding:16px 10px;border:1px solid var(--border);border-radius:var(--radius-lg);background:var(--card);text-align:center}
+.icon-cell svg{width:24px;height:24px;stroke:var(--bronze-600);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.icon-cell span{font-size:11px;color:var(--muted-foreground)}
+.dark .icon-cell svg{stroke:var(--bronze-400)}
+
+.eva{display:flex;gap:4px;margin-top:6px}
+.eva i{flex:1;height:30px;border-radius:var(--radius-xs);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;cursor:pointer;font-family:var(--font-mono)}
+
+.footer{margin-top:96px;padding-top:32px;border-top:1px solid var(--border);color:var(--muted-foreground);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.toc-note{font-family:var(--font-mono);font-size:11px;color:var(--bronze-500)}
+@media(max-width:860px){
+  .shell{grid-template-columns:1fr}
+  .nav{display:none}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+<!-- =========================== NAV =========================== -->
+<aside class="nav">
+  <div class="nav-brand">
+    <svg class="nav-mark" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs><linearGradient id="bz" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#D6B187"/><stop offset=".5" stop-color="#B67A44"/><stop offset="1" stop-color="#7D4F2E"/>
+      </linearGradient></defs>
+      <circle cx="35" cy="19" r="4.4" fill="url(#bz)"/>
+      <path d="M31 25 C31 34 27 40 22 46 M35 25 C35 33 39 39 44 44" stroke="url(#bz)" stroke-width="3.4" stroke-linecap="round"/>
+      <path d="M13 34 C22 30 30 31 33 37 C36 31 44 30 52 35" stroke="url(#bz)" stroke-width="3.4" stroke-linecap="round" fill="none"/>
+      <circle cx="24" cy="24" r="1.5" fill="#C6935F"/><circle cx="25" cy="30" r="1.5" fill="#C6935F"/>
+      <circle cx="42" cy="50" r="1.5" fill="#C6935F"/><circle cx="33" cy="53" r="1.5" fill="#C6935F"/>
+    </svg>
+    <div><div class="nav-brand-t">Laura Saldarriaga</div><div class="nav-brand-s">Design System</div></div>
+  </div>
+
+  <div class="nav-group">
+    <div class="nav-group-t">Fundamentos</div>
+    <a href="#identidad"><span class="n">01</span> Identidad de marca</a>
+    <a href="#concepto"><span class="n">02</span> Concepto visual</a>
+    <a href="#color"><span class="n">03</span> Color</a>
+    <a href="#tipografia"><span class="n">04</span> Tipografía</a>
+    <a href="#espaciado"><span class="n">05</span> Espaciado</a>
+    <a href="#radios"><span class="n">06</span> Radios y bordes</a>
+    <a href="#sombras"><span class="n">07</span> Sombras</a>
+    <a href="#iconografia"><span class="n">08</span> Iconografía</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-t">Componentes</div>
+    <a href="#componentes"><span class="n">09</span> Biblioteca</a>
+    <a href="#estados"><span class="n">10</span> Estados</a>
+    <a href="#motion"><span class="n">11</span> Motion</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-t">Producto</div>
+    <a href="#dashboard"><span class="n">12</span> Dashboard</a>
+    <a href="#historia"><span class="n">13</span> Historia clínica</a>
+    <a href="#pantallas"><span class="n">14</span> Pantallas</a>
+    <a href="#accesibilidad"><span class="n">15</span> Accesibilidad</a>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-t">Implementación</div>
+    <a href="#tokens"><span class="n">16</span> Tokens CSS / Tailwind</a>
+  </div>
+</aside>
+
+<main class="main">
+  <!-- Topbar -->
+  <div class="topbar">
+    <div class="toc-note">BRAND BOOK · v1.0 · Medellín, CO</div>
+    <button class="pill" id="themeToggle">◐ Cambiar tema</button>
+  </div>
+
+  <!-- =========================== COVER =========================== -->
+  <section class="section" id="cover" style="padding-top:56px">
+    <div class="eyebrow">Consultorio de fisioterapia · Software clínico interno</div>
+    <h1 class="disp">El movimiento,<br>vuelto sistema.</h1>
+    <p class="lead" style="margin-top:22px">
+      Brand book y sistema de diseño para la plataforma interna de gestión clínica de
+      <strong>Laura Saldarriaga · Fisioterapeuta</strong>. Un producto pensado para terapeutas y personal
+      administrativo: calmado, preciso y premium — a la altura de Linear, Stripe o Vercel, pero con la
+      calidez de una práctica que cuida cuerpos reales.
+    </p>
+    <div style="display:flex;gap:10px;margin-top:28px;flex-wrap:wrap">
+      <span class="badge badge-primary"><span class="dot" style="background:var(--bronze-500)"></span>Cobre &amp; neutros cálidos</span>
+      <span class="badge badge-neutral">React · Next.js · Tailwind v4</span>
+      <span class="badge badge-neutral">shadcn/ui · Radix · Lucide</span>
+      <span class="badge badge-success"><span class="dot" style="background:var(--success-500)"></span>WCAG AA</span>
+    </div>
+
+    <div class="grid g4" style="margin-top:44px">
+      <div class="panel" style="background:linear-gradient(150deg,var(--bronze-400),var(--bronze-700));border:none;color:#fff">
+        <div style="font-family:var(--font-mono);font-size:11px;opacity:.85;letter-spacing:.1em">PRIMARY</div>
+        <div style="font-family:var(--font-serif);font-size:26px;margin-top:24px;font-weight:600">Cobre</div>
+        <div style="font-family:var(--font-mono);font-size:12px;opacity:.85">#9C6438</div>
+      </div>
+      <div class="panel">
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted-foreground);letter-spacing:.1em">ARQUETIPO</div>
+        <div style="font-family:var(--font-serif);font-size:26px;margin-top:24px;font-weight:600">La Cuidadora</div>
+        <div class="muted" style="font-size:12px">+ tono experto</div>
+      </div>
+      <div class="panel">
+        <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted-foreground);letter-spacing:.1em">TIPOGRAFÍA</div>
+        <div style="font-size:26px;margin-top:22px;font-weight:600;letter-spacing:-.02em">Geist / Inter</div>
+        <div class="muted" style="font-size:12px;font-family:var(--font-serif)">+ Cormorant para marca</div>
+      </div>
+      <div class="panel" style="background:var(--stone-900);border:none;color:var(--stone-100)">
+        <div style="font-family:var(--font-mono);font-size:11px;opacity:.7;letter-spacing:.1em">MODO</div>
+        <div style="font-size:26px;margin-top:24px;font-weight:600">Claro + Oscuro</div>
+        <div style="font-family:var(--font-mono);font-size:12px;opacity:.7">paridad total</div>
+      </div>
+    </div>
+  </section>
+  <!-- =========================== 01 IDENTIDAD =========================== -->
+  <section class="section" id="identidad">
+    <div class="eyebrow">01 · Fundamentos</div>
+    <h2 class="title">Identidad de marca</h2>
+    <p class="lead">La marca nace de un logo que ya dice mucho: una figura humana en movimiento, dibujada en trazos de cobre con puntos que sugieren la columna vertebral. Movimiento, cuerpo, calidez y oficio. El software hereda ese ADN.</p>
+
+    <div class="grid g2" style="margin-top:28px">
+      <div class="panel">
+        <h4 class="min">Misión</h4>
+        <p>Devolverle a cada paciente la libertad de moverse sin dolor, acompañando su recuperación con criterio clínico, tecnología y trato humano.</p>
+      </div>
+      <div class="panel">
+        <h4 class="min">Visión</h4>
+        <p>Ser el consultorio de fisioterapia de referencia en Medellín, reconocido por una experiencia clínica impecable dentro y fuera de la sala de terapia.</p>
+      </div>
+    </div>
+
+    <h3 class="sub">Valores</h3>
+    <div class="grid g4">
+      <div class="chip">Precisión clínica</div>
+      <div class="chip">Cercanía humana</div>
+      <div class="chip">Rigor y evidencia</div>
+      <div class="chip">Elegancia sobria</div>
+      <div class="chip">Confianza</div>
+      <div class="chip">Constancia</div>
+      <div class="chip">Discreción</div>
+      <div class="chip">Bienestar integral</div>
+    </div>
+
+    <h3 class="sub">Personalidad y arquetipo</h3>
+    <div class="grid g2">
+      <div class="panel">
+        <span class="badge badge-primary">Arquetipo primario · La Cuidadora</span>
+        <p style="margin-top:12px">Protege, contiene y sana. Pone al paciente en el centro. En la interfaz se traduce en un tono tranquilizador, mensajes claros y cero fricción en tareas sensibles.</p>
+      </div>
+      <div class="panel">
+        <span class="badge badge-neutral">Matiz secundario · La Experta</span>
+        <p style="margin-top:12px">Domina su técnica y transmite seguridad. En el producto aparece como densidad de datos bien ordenada, terminología correcta y controles que respetan el criterio profesional.</p>
+      </div>
+    </div>
+
+    <h3 class="sub">Tono y voz</h3>
+    <div class="tablewrap">
+      <table class="spec">
+        <thead><tr><th>Rasgo</th><th>Sí suena así</th><th>No suena así</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Claro</strong></td><td>«Guarda la evolución del paciente»</td><td>«Persistir el registro de seguimiento»</td></tr>
+          <tr><td><strong>Cálido</strong></td><td>«Todo listo. La cita quedó agendada.»</td><td>«Operación completada con éxito (200)»</td></tr>
+          <tr><td><strong>Sobrio</strong></td><td>«No se pudo guardar. Revisa el campo Dolor.»</td><td>«¡Ups! 😬 Algo salió mal…»</td></tr>
+          <tr><td><strong>Experto</strong></td><td>«Rango articular · flexión de rodilla»</td><td>«Qué tanto dobla la pierna»</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout" style="margin-top:20px">Regla de voz: la interfaz habla en <strong>segunda persona, tiempo presente y voz activa</strong>. Un botón nombra exactamente lo que ocurre («Agendar cita»), y el mensaje de confirmación conserva ese verbo («Cita agendada»).</div>
+  </section>
+
+  <!-- =========================== 02 CONCEPTO =========================== -->
+  <section class="section" id="concepto">
+    <div class="eyebrow">02 · Fundamentos</div>
+    <h2 class="title">Concepto visual</h2>
+    <p class="lead">Cada decisión se justifica contra dos fuentes: el logo (cobre, figura en movimiento, puntos de columna) y el objetivo (software médico premium, no marketing). El material de redes usa un magenta intenso; el software <strong>no</strong> lo hereda como color base — extrae en cambio la elegancia del cobre y lo reserva para un uso puntual.</p>
+
+    <div class="grid g2" style="margin-top:26px">
+      <div class="panel"><h4 class="min">Color · Cobre como firma</h4><p>La fisioterapia digital abusa del azul clínico. Elegimos el <strong>cobre del logo</strong> como color primario: cálido, humano, premium. Diferencia la marca y sostiene la promesa de «cercanía con el paciente». Neutros cálidos (no grises fríos) acompañan para no romper la temperatura.</p></div>
+      <div class="panel"><h4 class="min">Tipografía · Sans para el trabajo</h4><p>El wordmark es serif, pero un software denso exige un sans neutro y legible. <strong>Geist / Inter</strong> para toda la UI; la serif <strong>Cormorant</strong> se reserva para momentos de marca (login, portadas de reporte), evocando el logo sin invadir el producto.</p></div>
+      <div class="panel"><h4 class="min">Espaciado · Aire disciplinado</h4><p>Escala de 4px. El aire comunica calma y control; se usa con generosidad en zonas de lectura clínica y con densidad medida en tablas y agenda. La consistencia del ritmo es lo que da sensación «premium».</p></div>
+      <div class="panel"><h4 class="min">Bordes y radios · Suaves, no infantiles</h4><p>Radios medios (8–14px): ni esquinas duras de broadsheet ni burbujas redondas. Bordes de 1px en neutro cálido; la jerarquía la da la sombra y el color, no líneas gruesas.</p></div>
+      <div class="panel"><h4 class="min">Sombras · Elevación sutil</h4><p>Sombras de tinte cálido (no negro puro) y muy bajas en opacidad. Sirven para separar planos (menús, diálogos), nunca para decorar. Menos es más.</p></div>
+      <div class="panel"><h4 class="min">Fotografía e ilustración</h4><p>Foto real, luz alta, tonos claros y desaturados con acento dorado (como el material de marca). Ilustración mínima, lineal, en cobre. Nada de stock genérico saturado ni 3D infantil.</p></div>
+      <div class="panel"><h4 class="min">Iconografía · Lucide</h4><p>Trazo de 1.6–1.75px, esquinas redondeadas, un solo grosor. Coherente con Radix/shadcn y con el trazo fino del logo.</p></div>
+      <div class="panel"><h4 class="min">Patrones · El punto de columna</h4><p>Los puntos que recorren la columna en el logo se convierten en motivo: separadores punteados, indicadores de progreso, marcadores de escala. Un guiño sutil, nunca literal.</p></div>
+    </div>
+  </section>
+  <section class="section" id="color">
+    <div class="eyebrow">03 · Fundamentos</div>
+    <h2 class="title">Sistema de color</h2>
+    <p class="lead">Tres escalas de marca (Cobre, Stone, Orquídea) más cuatro semánticas. Todas en pasos 50→950. El cobre es la firma; el neutro cálido es el caballo de batalla; la orquídea aparece con moderación como guiño a la marca en redes.</p>
+    <h3 class="sub">Cobre — Primary</h3>
+    <div class="scale">
+      <div class="sw" style="background:#FAF6F0;color:#17150F"><span class="n">50</span><span class="h">#FAF6F0</span></div>
+      <div class="sw" style="background:#F3E9DB;color:#17150F"><span class="n">100</span><span class="h">#F3E9DB</span></div>
+      <div class="sw" style="background:#E6D0B4;color:#17150F"><span class="n">200</span><span class="h">#E6D0B4</span></div>
+      <div class="sw" style="background:#D6B187;color:#17150F"><span class="n">300</span><span class="h">#D6B187</span></div>
+      <div class="sw" style="background:#C6935F;color:#FAF6F0"><span class="n">400</span><span class="h">#C6935F</span></div>
+      <div class="sw" style="background:#B67A44;color:#FAF6F0"><span class="n">500</span><span class="h">#B67A44</span></div>
+      <div class="sw" style="background:#9C6438;color:#FAF6F0"><span class="n">600</span><span class="h">#9C6438</span></div>
+      <div class="sw" style="background:#7D4F2E;color:#FAF6F0"><span class="n">700</span><span class="h">#7D4F2E</span></div>
+      <div class="sw" style="background:#613E27;color:#FAF6F0"><span class="n">800</span><span class="h">#613E27</span></div>
+      <div class="sw" style="background:#4A3020;color:#FAF6F0"><span class="n">900</span><span class="h">#4A3020</span></div>
+      <div class="sw" style="background:#291A11;color:#FAF6F0"><span class="n">950</span><span class="h">#291A11</span></div>
+    </div>
+    <h3 class="sub">Stone — Neutral cálido</h3>
+    <div class="scale">
+      <div class="sw" style="background:#FAFAF9;color:#17150F"><span class="n">50</span><span class="h">#FAFAF9</span></div>
+      <div class="sw" style="background:#F4F3F1;color:#17150F"><span class="n">100</span><span class="h">#F4F3F1</span></div>
+      <div class="sw" style="background:#E8E6E2;color:#17150F"><span class="n">200</span><span class="h">#E8E6E2</span></div>
+      <div class="sw" style="background:#D5D2CC;color:#17150F"><span class="n">300</span><span class="h">#D5D2CC</span></div>
+      <div class="sw" style="background:#B0ABA3;color:#FAF6F0"><span class="n">400</span><span class="h">#B0ABA3</span></div>
+      <div class="sw" style="background:#8A857C;color:#FAF6F0"><span class="n">500</span><span class="h">#8A857C</span></div>
+      <div class="sw" style="background:#6B665E;color:#FAF6F0"><span class="n">600</span><span class="h">#6B665E</span></div>
+      <div class="sw" style="background:#514D46;color:#FAF6F0"><span class="n">700</span><span class="h">#514D46</span></div>
+      <div class="sw" style="background:#3A3733;color:#FAF6F0"><span class="n">800</span><span class="h">#3A3733</span></div>
+      <div class="sw" style="background:#262320;color:#FAF6F0"><span class="n">900</span><span class="h">#262320</span></div>
+      <div class="sw" style="background:#17150F;color:#FAF6F0"><span class="n">950</span><span class="h">#17150F</span></div>
+    </div>
+    <h3 class="sub">Orquídea — Secondary</h3>
+    <div class="scale">
+      <div class="sw" style="background:#FAF6FB;color:#17150F"><span class="n">50</span><span class="h">#FAF6FB</span></div>
+      <div class="sw" style="background:#F3E9F6;color:#17150F"><span class="n">100</span><span class="h">#F3E9F6</span></div>
+      <div class="sw" style="background:#E6D2EC;color:#17150F"><span class="n">200</span><span class="h">#E6D2EC</span></div>
+      <div class="sw" style="background:#D2ADDD;color:#17150F"><span class="n">300</span><span class="h">#D2ADDD</span></div>
+      <div class="sw" style="background:#B87EC9;color:#FAF6F0"><span class="n">400</span><span class="h">#B87EC9</span></div>
+      <div class="sw" style="background:#9E58B4;color:#FAF6F0"><span class="n">500</span><span class="h">#9E58B4</span></div>
+      <div class="sw" style="background:#85419B;color:#FAF6F0"><span class="n">600</span><span class="h">#85419B</span></div>
+      <div class="sw" style="background:#6B347C;color:#FAF6F0"><span class="n">700</span><span class="h">#6B347C</span></div>
+      <div class="sw" style="background:#542A61;color:#FAF6F0"><span class="n">800</span><span class="h">#542A61</span></div>
+      <div class="sw" style="background:#43234D;color:#FAF6F0"><span class="n">900</span><span class="h">#43234D</span></div>
+      <div class="sw" style="background:#2A1530;color:#FAF6F0"><span class="n">950</span><span class="h">#2A1530</span></div>
+    </div>
+    <h3 class="sub">Success</h3>
+    <div class="scale" style="grid-template-columns:repeat(6,1fr)">
+      <div class="sw" style="background:#EEF7F1;color:#17150F"><span class="n">50</span><span class="h">#EEF7F1</span></div>
+      <div class="sw" style="background:#D6ECDE;color:#17150F"><span class="n">100</span><span class="h">#D6ECDE</span></div>
+      <div class="sw" style="background:#3E9B6B;color:#FAF6F0"><span class="n">500</span><span class="h">#3E9B6B</span></div>
+      <div class="sw" style="background:#2F8557;color:#FAF6F0"><span class="n">600</span><span class="h">#2F8557</span></div>
+      <div class="sw" style="background:#266B47;color:#FAF6F0"><span class="n">700</span><span class="h">#266B47</span></div>
+      <div class="sw" style="background:#1B4530;color:#FAF6F0"><span class="n">900</span><span class="h">#1B4530</span></div>
+    </div>
+    <h3 class="sub">Warning</h3>
+    <div class="scale" style="grid-template-columns:repeat(6,1fr)">
+      <div class="sw" style="background:#FEF8EC;color:#17150F"><span class="n">50</span><span class="h">#FEF8EC</span></div>
+      <div class="sw" style="background:#FBEDCB;color:#17150F"><span class="n">100</span><span class="h">#FBEDCB</span></div>
+      <div class="sw" style="background:#E0A32E;color:#17150F"><span class="n">500</span><span class="h">#E0A32E</span></div>
+      <div class="sw" style="background:#C08420;color:#FAF6F0"><span class="n">600</span><span class="h">#C08420</span></div>
+      <div class="sw" style="background:#986619;color:#FAF6F0"><span class="n">700</span><span class="h">#986619</span></div>
+      <div class="sw" style="background:#5E3F12;color:#FAF6F0"><span class="n">900</span><span class="h">#5E3F12</span></div>
+    </div>
+    <h3 class="sub">Error / Destructive</h3>
+    <div class="scale" style="grid-template-columns:repeat(6,1fr)">
+      <div class="sw" style="background:#FDF2F1;color:#17150F"><span class="n">50</span><span class="h">#FDF2F1</span></div>
+      <div class="sw" style="background:#FADAD7;color:#17150F"><span class="n">100</span><span class="h">#FADAD7</span></div>
+      <div class="sw" style="background:#D24B43;color:#FAF6F0"><span class="n">500</span><span class="h">#D24B43</span></div>
+      <div class="sw" style="background:#B93A34;color:#FAF6F0"><span class="n">600</span><span class="h">#B93A34</span></div>
+      <div class="sw" style="background:#97302B;color:#FAF6F0"><span class="n">700</span><span class="h">#97302B</span></div>
+      <div class="sw" style="background:#5E211E;color:#FAF6F0"><span class="n">900</span><span class="h">#5E211E</span></div>
+    </div>
+    <h3 class="sub">Info</h3>
+    <div class="scale" style="grid-template-columns:repeat(6,1fr)">
+      <div class="sw" style="background:#F0F4F8;color:#17150F"><span class="n">50</span><span class="h">#F0F4F8</span></div>
+      <div class="sw" style="background:#DBE6F0;color:#17150F"><span class="n">100</span><span class="h">#DBE6F0</span></div>
+      <div class="sw" style="background:#4F7CAC;color:#FAF6F0"><span class="n">500</span><span class="h">#4F7CAC</span></div>
+      <div class="sw" style="background:#3E6693;color:#FAF6F0"><span class="n">600</span><span class="h">#3E6693</span></div>
+      <div class="sw" style="background:#325274;color:#FAF6F0"><span class="n">700</span><span class="h">#325274</span></div>
+      <div class="sw" style="background:#223850;color:#FAF6F0"><span class="n">900</span><span class="h">#223850</span></div>
+    </div>
+    <h3 class="sub">Roles semánticos · valores clave (modo claro)</h3>
+    <div class="panel">
+      <div class="tokrow">
+        <span class="box" style="background:#9C6438"></span>
+        <span class="nm">--primary</span>
+        <span class="hx">#9C6438 · rgb(156 100 56) · hsl(26 47% 42%)</span>
+        <span class="use">Acciones principales, enlaces, foco</span>
+      </div>
+      <div class="tokrow">
+        <span class="box" style="background:#F4F3F1"></span>
+        <span class="nm">--secondary</span>
+        <span class="hx">#F4F3F1 · rgb(244 243 241) · hsl(40 12% 95%)</span>
+        <span class="use">Botones secundarios, fondos sutiles</span>
+      </div>
+      <div class="tokrow">
+        <span class="box" style="background:#F3E9DB"></span>
+        <span class="nm">--accent</span>
+        <span class="hx">#F3E9DB · rgb(243 233 219) · hsl(35 50% 91%)</span>
+        <span class="use">Hover de ítems, resaltados cálidos</span>
+      </div>
+      <div class="tokrow">
+        <span class="box" style="background:#2F8557"></span>
+        <span class="nm">--success</span>
+        <span class="hx">#2F8557 · rgb(47 133 87) · hsl(148 48% 35%)</span>
+        <span class="use">Confirmaciones, estados sanos</span>
+      </div>
+      <div class="tokrow">
+        <span class="box" style="background:#C08420"></span>
+        <span class="nm">--warning</span>
+        <span class="hx">#C08420 · rgb(192 132 32) · hsl(38 71% 44%)</span>
+        <span class="use">Avisos, campos por completar</span>
+      </div>
+      <div class="tokrow">
+        <span class="box" style="background:#D24B43"></span>
+        <span class="nm">--destructive</span>
+        <span class="hx">#D24B43 · rgb(210 75 67) · hsl(3 61% 54%)</span>
+        <span class="use">Errores, acciones destructivas</span>
+      </div>
+      <div class="tokrow">
+        <span class="box" style="background:#3E6693"></span>
+        <span class="nm">--info</span>
+        <span class="hx">#3E6693 · rgb(62 102 147) · hsl(212 41% 41%)</span>
+        <span class="use">Notas neutras, tips clínicos</span>
+      </div>
+      <div class="tokrow">
+        <span class="box" style="background:#FBFAF8"></span>
+        <span class="nm">--background</span>
+        <span class="hx">#FBFAF8 · rgb(251 250 248) · hsl(40 27% 98%)</span>
+        <span class="use">Lienzo de la app</span>
+      </div>
+      <div class="tokrow">
+        <span class="box" style="background:#FFFFFF"></span>
+        <span class="nm">--card</span>
+        <span class="hx">#FFFFFF · rgb(255 255 255) · hsl(0 0% 100%)</span>
+        <span class="use">Tarjetas, superficies elevadas</span>
+      </div>
+      <div class="tokrow">
+        <span class="box" style="background:#E8E6E2"></span>
+        <span class="nm">--border</span>
+        <span class="hx">#E8E6E2 · rgb(232 230 226) · hsl(40 12% 90%)</span>
+        <span class="use">Bordes 1px, divisores</span>
+      </div>
+      <div class="tokrow">
+        <span class="box" style="background:#6B665E"></span>
+        <span class="nm">--muted-foreground</span>
+        <span class="hx">#6B665E · rgb(107 102 94) · hsl(37 6% 39%)</span>
+        <span class="use">Texto secundario, placeholders</span>
+      </div>
+      <div class="tokrow">
+        <span class="box" style="background:#262320"></span>
+        <span class="nm">--foreground</span>
+        <span class="hx">#262320 · rgb(38 35 32) · hsl(30 9% 14%)</span>
+        <span class="use">Texto principal</span>
+      </div>
+      <div class="tokrow">
+        <span class="box" style="background:#F7F5F2"></span>
+        <span class="nm">--sidebar</span>
+        <span class="hx">#F7F5F2 · rgb(247 245 242) · hsl(36 24% 96%)</span>
+        <span class="use">Fondo de navegación lateral</span>
+      </div>
+      <div class="tokrow">
+        <span class="box" style="background:#EFEBE4"></span>
+        <span class="nm">--sidebar-accent</span>
+        <span class="hx">#EFEBE4 · rgb(239 235 228) · hsl(38 26% 92%)</span>
+        <span class="use">Hover de ítems del sidebar</span>
+      </div>
+    </div>
+    <h3 class="sub">Uso del color · reglas</h3>
+    <div class="grid g2">
+      <div class="do"><b>Hacer</b>Cobre solo para la acción primaria de cada vista (un botón lleno por pantalla). Todo lo demás en neutros.</div>
+      <div class="dont"><b>Evitar</b>Rellenar KPIs, íconos y fondos de cobre. Satura y rompe la sensación premium.</div>
+      <div class="do"><b>Hacer</b>Usar semánticos solo por significado: verde = sano, ámbar = atención, rojo = riesgo/error.</div>
+      <div class="dont"><b>Evitar</b>Magenta intenso de redes en la UI. La orquídea aquí es tenue y puntual (etiquetas, un dato).</div>
+    </div>
+    <div class="callout" style="margin-top:20px">Contraste verificado: <code class="inline">--primary</code> #9C6438 sobre blanco = <strong>4.6:1</strong> (AA para texto). Para texto pequeño sobre fondos claros usa <code class="inline">bronze-700</code> o superior.</div>
+  </section>  <!-- =========================== 04 TIPOGRAFÍA =========================== -->
+  <section class="section" id="tipografia">
+    <div class="eyebrow">04 · Fundamentos</div>
+    <h2 class="title">Tipografía</h2>
+    <p class="lead">Un sistema de tres familias con roles claros: un sans para todo el producto, una serif reservada a la marca, y una mono para datos clínicos y código.</p>
+
+    <div class="grid g3" style="margin-top:26px">
+      <div class="panel"><h4 class="min" style="margin-top:0">Principal · UI</h4><div style="font-size:30px;font-weight:600;letter-spacing:-.02em">Geist Sans</div><p class="muted" style="font-size:13px">Fallback: Inter. Neutra, moderna, altísima legibilidad en densidad. Es la voz por defecto de toda la interfaz.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Marca · Display</h4><div style="font-family:var(--font-serif);font-size:34px;font-weight:600">Cormorant</div><p class="muted" style="font-size:13px">Solo en momentos de marca: login, portadas de reporte PDF, estados vacíos con firma. Evoca el wordmark del logo.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Datos · Mono</h4><div style="font-family:var(--font-mono);font-size:26px;font-weight:500">Geist Mono</div><p class="muted" style="font-size:13px">Fallback: JetBrains Mono. IDs de paciente, códigos CIE, fechas, valores de escalas, tabulares.</p></div>
+    </div>
+
+    <h3 class="sub">Escala tipográfica</h3>
+    <div class="panel">
+      <div class="spec-row"><div class="spec-meta">Display<br><b>56px</b> · 600<br>lh 1.02 · tr -.02em<br><span style="opacity:.7">Cormorant</span></div><div style="font-family:var(--font-serif);font-size:56px;font-weight:600;line-height:1.02;letter-spacing:-.02em">Tu cuerpo merece bienestar</div></div>
+      <div class="spec-row"><div class="spec-meta">H1<br><b>36px</b> · 600<br>lh 1.15 · tr -.02em</div><div style="font-size:36px;font-weight:600;line-height:1.15;letter-spacing:-.02em">Panel de control</div></div>
+      <div class="spec-row"><div class="spec-meta">H2<br><b>30px</b> · 600<br>lh 1.2 · tr -.015em</div><div style="font-size:30px;font-weight:600;line-height:1.2;letter-spacing:-.015em">Historia clínica</div></div>
+      <div class="spec-row"><div class="spec-meta">H3<br><b>24px</b> · 600<br>lh 1.25 · tr -.01em</div><div style="font-size:24px;font-weight:600;line-height:1.25;letter-spacing:-.01em">Evaluación funcional</div></div>
+      <div class="spec-row"><div class="spec-meta">H4<br><b>20px</b> · 600<br>lh 1.3</div><div style="font-size:20px;font-weight:600;line-height:1.3">Próximas citas</div></div>
+      <div class="spec-row"><div class="spec-meta">Body-lg<br><b>17px</b> · 400<br>lh 1.6</div><div style="font-size:17px;line-height:1.6">El paciente refiere dolor lumbar irradiado hacia el miembro inferior derecho desde hace tres semanas.</div></div>
+      <div class="spec-row"><div class="spec-meta">Body<br><b>14px</b> · 400<br>lh 1.55</div><div style="font-size:14px;line-height:1.55">Texto por defecto de la interfaz: descripciones, celdas de tabla, contenido de formularios y párrafos.</div></div>
+      <div class="spec-row"><div class="spec-meta">Small<br><b>13px</b> · 400<br>lh 1.5</div><div style="font-size:13px;line-height:1.5">Metadatos, ayudas de campo, texto secundario dentro de tarjetas.</div></div>
+      <div class="spec-row"><div class="spec-meta">Caption<br><b>12px</b> · 400<br>lh 1.4</div><div style="font-size:12px;line-height:1.4;color:var(--muted-foreground)">Marcas de tiempo, notas al pie, leyendas de gráficos.</div></div>
+      <div class="spec-row"><div class="spec-meta">Label<br><b>13px</b> · 500<br>tr .005em</div><div style="font-size:13px;font-weight:500">Etiqueta de campo</div></div>
+      <div class="spec-row"><div class="spec-meta">Button<br><b>14px</b> · 500</div><div><button class="btn btn-primary">Agendar cita</button></div></div>
+      <div class="spec-row"><div class="spec-meta">Code<br><b>13px</b> · 400<br>Mono</div><div style="font-family:var(--font-mono);font-size:13px">PAC-00482 · CIE-10 M54.5</div></div>
+    </div>
+    <div class="callout" style="margin-top:20px">Pesos disponibles: <strong>400 / 450 / 500 / 600 / 700</strong>. En UI nunca se usa 700 para texto corrido; los títulos van en 600. El 450 («text») da un cuerpo ligeramente más presente sin llegar a medium.</div>
+  </section>
+
+  <!-- =========================== 05 ESPACIADO =========================== -->
+  <section class="section" id="espaciado">
+    <div class="eyebrow">05 · Fundamentos</div>
+    <h2 class="title">Espaciado</h2>
+    <p class="lead">Escala base de 4px, idéntica a Tailwind. Todo padding, margin y gap sale de aquí. La consistencia del ritmo es la mitad de la sensación premium.</p>
+    <div class="tablewrap" style="margin-top:24px">
+      <table class="spec">
+        <thead><tr><th>Token</th><th>px</th><th>rem</th><th>Uso típico</th><th style="width:180px">Escala</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">0.5</td><td class="mono">2</td><td class="mono">0.125</td><td>Ajustes ópticos finos</td><td><span style="display:block;height:10px;width:2px;background:var(--bronze-500)"></span></td></tr>
+          <tr><td class="mono">1</td><td class="mono">4</td><td class="mono">0.25</td><td>Gap entre ícono y texto</td><td><span style="display:block;height:10px;width:4px;background:var(--bronze-500)"></span></td></tr>
+          <tr><td class="mono">2</td><td class="mono">8</td><td class="mono">0.5</td><td>Padding interno de badges/chips</td><td><span style="display:block;height:10px;width:8px;background:var(--bronze-500)"></span></td></tr>
+          <tr><td class="mono">3</td><td class="mono">12</td><td class="mono">0.75</td><td>Padding de inputs, gap de formulario</td><td><span style="display:block;height:10px;width:12px;background:var(--bronze-500)"></span></td></tr>
+          <tr><td class="mono">4</td><td class="mono">16</td><td class="mono">1</td><td>Padding de tarjetas, gap de grid</td><td><span style="display:block;height:10px;width:16px;background:var(--bronze-500)"></span></td></tr>
+          <tr><td class="mono">6</td><td class="mono">24</td><td class="mono">1.5</td><td>Padding cómodo de paneles</td><td><span style="display:block;height:10px;width:24px;background:var(--bronze-500)"></span></td></tr>
+          <tr><td class="mono">8</td><td class="mono">32</td><td class="mono">2</td><td>Separación entre bloques</td><td><span style="display:block;height:10px;width:32px;background:var(--bronze-500)"></span></td></tr>
+          <tr><td class="mono">12</td><td class="mono">48</td><td class="mono">3</td><td>Separación entre secciones</td><td><span style="display:block;height:10px;width:48px;background:var(--bronze-500)"></span></td></tr>
+          <tr><td class="mono">16</td><td class="mono">64</td><td class="mono">4</td><td>Aire de encabezado de página</td><td><span style="display:block;height:10px;width:64px;background:var(--bronze-500)"></span></td></tr>
+          <tr><td class="mono">24</td><td class="mono">96</td><td class="mono">6</td><td>Márgenes de landing / login</td><td><span style="display:block;height:10px;width:96px;background:var(--bronze-500)"></span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid g3" style="margin-top:20px">
+      <div class="panel"><h4 class="min" style="margin-top:0">Densidad de datos</h4><p class="muted" style="font-size:13px">Tablas y agenda: filas de <strong>40–44px</strong>, padding horizontal 12px. Prioriza escaneo rápido.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Zonas de lectura</h4><p class="muted" style="font-size:13px">Historia clínica y notas: padding 24px, ancho de texto ≤ 70ch. Prioriza calma y foco.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Grid de layout</h4><p class="muted" style="font-size:13px">Contenedor máx. 1280px, gutter 24px, sidebar 264px. Contenido a 12 columnas.</p></div>
+    </div>
+  </section>
+  <!-- =========================== 06 RADIOS Y BORDES =========================== -->
+  <section class="section" id="radios">
+    <div class="eyebrow">06 · Fundamentos</div>
+    <h2 class="title">Radios y bordes</h2>
+    <p class="lead">Esquinas suaves pero contenidas — ni duras (broadsheet) ni burbuja. El radio base del sistema es <code class="inline">--radius: 10px</code>; shadcn deriva sm/md/lg/xl de él.</p>
+    <div class="demo-tiles" style="margin-top:24px">
+      <div class="tile" style="border-radius:var(--radius-xs)">xs · 4px<br>tags, marcas EVA</div>
+      <div class="tile" style="border-radius:var(--radius-sm)">sm · 6px<br>botones pequeños</div>
+      <div class="tile" style="border-radius:var(--radius-md)">md · 8px<br>botones, inputs</div>
+      <div class="tile" style="border-radius:var(--radius-lg)">lg · 10px<br>tarjetas, tablas</div>
+      <div class="tile" style="border-radius:var(--radius-xl)">xl · 14px<br>paneles, diálogos</div>
+      <div class="tile" style="border-radius:var(--radius-2xl)">2xl · 20px<br>hero, contenedores</div>
+      <div class="tile" style="border-radius:var(--radius-full)">full<br>avatar, badge, switch</div>
+      <div class="tile" style="border-radius:var(--radius-md);border:1px dashed var(--bronze-400);color:var(--bronze-600)">regla: anida<br>menor dentro de mayor</div>
+    </div>
+    <h3 class="sub">Bordes</h3>
+    <div class="grid g3">
+      <div class="panel"><h4 class="min" style="margin-top:0">Grosor</h4><p class="muted" style="font-size:13px"><strong>1px</strong> por defecto (todo). <strong>1.5–2px</strong> solo en foco y en estados seleccionados. Nunca bordes gruesos decorativos.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Color</h4><p class="muted" style="font-size:13px"><code class="inline">--border</code> #E8E6E2 en reposo. En hover de superficies interactivas sube a <code class="inline">stone-300</code>. En foco, cobre.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Estados</h4>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px">
+          <input class="input" placeholder="Reposo — border">
+          <input class="input" style="border-color:var(--bronze-500);box-shadow:0 0 0 3px color-mix(in srgb,var(--bronze-500) 22%,transparent)" placeholder="Foco — cobre + ring">
+          <input class="input err" placeholder="Error — destructive">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== 07 SOMBRAS =========================== -->
+  <section class="section" id="sombras">
+    <div class="eyebrow">07 · Fundamentos</div>
+    <h2 class="title">Sombras y elevación</h2>
+    <p class="lead">Sombras de tinte cálido (base bronze-950), muy bajas en opacidad. Cada nivel corresponde a una distancia real respecto al lienzo. Sirven para jerarquía, nunca para adornar.</p>
+    <div class="grid g3" style="margin-top:24px">
+      <div class="panel" style="box-shadow:var(--shadow-xs)"><h4 class="min" style="margin-top:0">xs</h4><p class="muted" style="font-size:12.5px">Reposo de tarjetas, inputs. Apenas despega.</p></div>
+      <div class="panel" style="box-shadow:var(--shadow-sm)"><h4 class="min" style="margin-top:0">sm</h4><p class="muted" style="font-size:12.5px">Hover de tarjeta, botón elevado.</p></div>
+      <div class="panel" style="box-shadow:var(--shadow-md)"><h4 class="min" style="margin-top:0">md</h4><p class="muted" style="font-size:12.5px">Dropdowns, popovers, command palette.</p></div>
+      <div class="panel" style="box-shadow:var(--shadow-lg)"><h4 class="min" style="margin-top:0">lg</h4><p class="muted" style="font-size:12.5px">Menús contextuales flotantes, toasts.</p></div>
+      <div class="panel" style="box-shadow:var(--shadow-xl)"><h4 class="min" style="margin-top:0">xl</h4><p class="muted" style="font-size:12.5px">Diálogos, modales centrados.</p></div>
+      <div class="panel" style="box-shadow:var(--shadow-2xl)"><h4 class="min" style="margin-top:0">2xl</h4><p class="muted" style="font-size:12.5px">Drawer lateral, hoja completa.</p></div>
+      <div class="panel" style="box-shadow:var(--shadow-inner)"><h4 class="min" style="margin-top:0">inner</h4><p class="muted" style="font-size:12.5px">Campos hundidos, tracks de progreso/switch.</p></div>
+      <div class="panel" style="border-style:dashed"><h4 class="min" style="margin-top:0">Regla</h4><p class="muted" style="font-size:12.5px">A mayor elevación, mayor radio y mayor blur — coherencia física.</p></div>
+    </div>
+    <div class="callout" style="margin-top:20px">En <strong>modo oscuro</strong> la elevación se comunica sobre todo por <em>color de superficie</em> (cada nivel un poco más claro) y menos por sombra, que se vuelve casi imperceptible.</div>
+  </section>
+  <!-- =========================== 08 ICONOGRAFÍA =========================== -->
+  <section class="section" id="iconografia">
+    <div class="eyebrow">08 · Fundamentos</div>
+    <h2 class="title">Iconografía</h2>
+    <p class="lead">Basada en <strong>Lucide</strong>: trazo de 1.6–1.75px, terminaciones y uniones redondeadas, un único grosor, rejilla de 24px. Coherente con el trazo fino del logo. Los íconos acompañan, no gritan: en reposo van en <code class="inline">muted-foreground</code>; el activo, en cobre.</p>
+    <div class="grid g4" style="margin-top:24px;margin-bottom:24px">
+      <div class="panel" style="text-align:center"><svg viewBox="0 0 24 24" style="width:26px;height:26px;stroke:var(--muted-foreground);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;margin:0 auto"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="muted" style="font-size:12px;margin-top:8px">Reposo · 1.7px</div></div>
+      <div class="panel" style="text-align:center"><svg viewBox="0 0 24 24" style="width:26px;height:26px;stroke:var(--bronze-600);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;margin:0 auto"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div style="font-size:12px;margin-top:8px;color:var(--bronze-600)">Activo · cobre</div></div>
+      <div class="panel" style="text-align:center;background:var(--stone-900)"><svg viewBox="0 0 24 24" style="width:26px;height:26px;stroke:var(--stone-100);fill:none;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;margin:0 auto"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div style="font-size:12px;margin-top:8px;color:var(--stone-300)">Sobre oscuro · 1.4px</div></div>
+      <div class="panel" style="text-align:center"><svg viewBox="0 0 24 24" style="width:34px;height:34px;stroke:var(--muted-foreground);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;margin:0 auto"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><div class="muted" style="font-size:12px;margin-top:8px">Grande · baja grosor</div></div>
+    </div>
+
+    <h3 class="sub">Set del dominio clínico</h3>
+    <div class="icons-grid">
+      <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>Paciente</span></div>
+      <div class="icon-cell"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/><path d="m9 15 2 2 4-4"/></svg><span>Agenda</span></div>
+      <div class="icon-cell"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg><span>Calendario</span></div>
+      <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M8 3h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M9 3v3h6V3M9 12h6M9 16h4"/></svg><span>Historia clínica</span></div>
+      <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M8 3h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M9 3v3h6V3"/><path d="m9 13 2 2 4-4"/></svg><span>Evaluación</span></div>
+      <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M3 12h3l2-6 4 12 2-6h3"/><path d="M18 12a3 3 0 1 0 3 3"/></svg><span>Terapia</span></div>
+      <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M6 8v8M18 8v8M4 10v4M20 10v4M6 12h12"/></svg><span>Ejercicios</span></div>
+      <div class="icon-cell"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M16 14h2"/></svg><span>Caja</span></div>
+      <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-3-2V3Z"/><path d="M9 8h6M9 12h6"/></svg><span>Facturación</span></div>
+      <div class="icon-cell"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg><span>Reportes</span></div>
+      <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg><span>Configuración</span></div>
+      <div class="icon-cell"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span>Buscar</span></div>
+    </div>
+  </section>
+<style>
+/* Estilos de apoyo para la galería de componentes */
+.swi{position:relative;width:38px;height:22px;border-radius:var(--radius-full);background:var(--stone-300);cursor:pointer;transition:background var(--dur-fast) var(--ease-standard);flex:none}
+.swi::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:var(--shadow-sm);transition:transform var(--dur-base) var(--ease-out)}
+.swi.on{background:var(--primary)}.swi.on::after{transform:translateX(16px)}
+.chk{width:18px;height:18px;border-radius:var(--radius-xs);border:1.5px solid var(--stone-400);display:inline-flex;align-items:center;justify-content:center;flex:none}
+.chk.on{background:var(--primary);border-color:var(--primary)}
+.chk.on svg{width:12px;height:12px;stroke:#fff;stroke-width:2.4;fill:none}
+.rad{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--stone-400);display:inline-flex;align-items:center;justify-content:center;flex:none}
+.rad.on{border-color:var(--primary)}.rad.on::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--primary)}
+.tabs{display:inline-flex;gap:2px;background:var(--muted);padding:3px;border-radius:var(--radius-md)}
+.tabs button{border:none;background:transparent;font:inherit;font-size:13px;font-weight:500;padding:6px 14px;border-radius:var(--radius-sm);color:var(--muted-foreground);cursor:pointer}
+.tabs button.on{background:var(--card);color:var(--foreground);box-shadow:var(--shadow-xs)}
+.av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--bronze-300),var(--bronze-600));color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex:none}
+.prog{height:8px;border-radius:var(--radius-full);background:var(--muted);overflow:hidden;box-shadow:var(--shadow-inner)}
+.prog i{display:block;height:100%;border-radius:var(--radius-full);background:var(--primary)}
+.sk{background:linear-gradient(90deg,var(--muted) 25%,var(--stone-200) 37%,var(--muted) 63%);background-size:400% 100%;animation:sk 1.4s ease infinite;border-radius:var(--radius-sm)}
+@keyframes sk{0%{background-position:100% 0}100%{background-position:-100% 0}}
+.alertbox{display:flex;gap:11px;padding:13px 15px;border-radius:var(--radius-md);border:1px solid;font-size:13px;align-items:flex-start}
+.alertbox svg{width:17px;height:17px;flex:none;margin-top:1px}
+.acc-item{border-bottom:1px solid var(--border)}
+.acc-head{display:flex;justify-content:space-between;align-items:center;padding:14px 2px;font-size:14px;font-weight:500;cursor:pointer}
+.acc-body{padding:0 2px 14px;font-size:13px;color:var(--muted-foreground);max-width:64ch}
+.tt{position:relative;display:inline-block}
+.tt .bub{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:var(--stone-900);color:var(--stone-50);font-size:12px;padding:6px 10px;border-radius:var(--radius-sm);white-space:nowrap;box-shadow:var(--shadow-lg)}
+.dark .tt .bub{background:var(--stone-100);color:var(--stone-900)}
+.pag{display:inline-flex;gap:4px}
+.pag button{width:34px;height:34px;border:1px solid var(--border);background:var(--card);border-radius:var(--radius-md);font:inherit;font-size:13px;cursor:pointer;color:var(--foreground)}
+.pag button.on{background:var(--primary);color:#fff;border-color:var(--primary)}
+.cmd{border:1px solid var(--border);border-radius:var(--radius-xl);background:var(--popover);box-shadow:var(--shadow-xl);overflow:hidden;max-width:420px}
+.cmd-search{display:flex;align-items:center;gap:9px;padding:13px 15px;border-bottom:1px solid var(--border)}
+.cmd-search input{border:none;background:transparent;outline:none;font:inherit;font-size:14px;width:100%;color:var(--foreground)}
+.cmd-item{display:flex;align-items:center;gap:11px;padding:9px 15px;font-size:13.5px;cursor:pointer}
+.cmd-item:hover,.cmd-item.on{background:var(--accent);color:var(--accent-foreground)}
+.cmd-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.7;opacity:.8}
+.cmd-item .kbd{margin-left:auto;font-family:var(--font-mono);font-size:10px;color:var(--muted-foreground);border:1px solid var(--border);border-radius:4px;padding:1px 5px}
+.bar{display:flex;align-items:flex-end;gap:10px;height:120px;padding-top:8px}
+.bar .col{flex:1;background:linear-gradient(180deg,var(--bronze-400),var(--bronze-600));border-radius:4px 4px 0 0;position:relative}
+.bar .col.mut{background:var(--muted)}
+.crumb{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--muted-foreground)}
+.crumb a:hover{color:var(--foreground)}.crumb .cur{color:var(--foreground);font-weight:500}
+</style>
+
+  <!-- =========================== 09 COMPONENTES =========================== -->
+  <section class="section" id="componentes">
+    <div class="eyebrow">09 · Componentes</div>
+    <h2 class="title">Biblioteca de componentes</h2>
+    <p class="lead">Todos construidos sobre shadcn/ui + Radix, retematizados con los tokens de la marca. Aquí van vivos, con su comportamiento real.</p>
+
+    <h3 class="sub">Botones</h3>
+    <div class="panel">
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+        <button class="btn btn-primary">Primario</button>
+        <button class="btn btn-secondary">Secundario</button>
+        <button class="btn btn-outline">Outline</button>
+        <button class="btn btn-ghost">Ghost</button>
+        <button class="btn btn-destructive">Destructivo</button>
+        <button class="btn btn-primary" disabled>Deshabilitado</button>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px">
+        <button class="btn btn-primary btn-sm">Pequeño</button>
+        <button class="btn btn-primary">Mediano</button>
+        <button class="btn btn-primary btn-lg">Grande</button>
+        <button class="btn btn-primary"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><path d="M12 5v14M5 12h14"/></svg> Con ícono</button>
+      </div>
+    </div>
+
+    <h3 class="sub">Formularios</h3>
+    <div class="grid g2">
+      <div class="panel">
+        <label class="field-label">Nombre del paciente</label>
+        <input class="input" placeholder="Ej. María Restrepo" value="María Restrepo">
+        <div class="field-hint">Nombre y apellido como figuran en el documento.</div>
+      </div>
+      <div class="panel">
+        <label class="field-label">Documento</label>
+        <input class="input err" value="1013…">
+        <div class="field-err">El documento debe tener entre 6 y 12 dígitos.</div>
+      </div>
+      <div class="panel">
+        <label class="field-label">Motivo de consulta</label>
+        <textarea class="input" style="height:76px;padding:10px 12px;resize:vertical" placeholder="Describe el motivo…">Dolor lumbar mecánico de 3 semanas.</textarea>
+      </div>
+      <div class="panel">
+        <label class="field-label">Tipo de terapia</label>
+        <div class="input" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer">Descarga muscular <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--muted-foreground);fill:none;stroke-width:2"><path d="m6 9 6 6 6-6"/></svg></div>
+        <div class="field-hint">Select / Combobox con búsqueda incluida.</div>
+      </div>
+    </div>
+
+    <h3 class="sub">Controles de selección</h3>
+    <div class="panel">
+      <div style="display:flex;flex-wrap:wrap;gap:28px;align-items:center">
+        <label style="display:flex;gap:9px;align-items:center;font-size:14px;cursor:pointer"><span class="chk on"><svg viewBox="0 0 24 24"><path d="m5 12 5 5 9-11"/></svg></span> Consentimiento firmado</label>
+        <label style="display:flex;gap:9px;align-items:center;font-size:14px;cursor:pointer"><span class="chk"></span> Requiere valoración previa</label>
+        <label style="display:flex;gap:9px;align-items:center;font-size:14px;cursor:pointer"><span class="rad on"></span> Sesión individual</label>
+        <label style="display:flex;gap:9px;align-items:center;font-size:14px;cursor:pointer"><span class="rad"></span> Sesión grupal</label>
+        <label style="display:flex;gap:9px;align-items:center;font-size:14px;cursor:pointer"><span class="swi on"></span> Recordatorio por WhatsApp</label>
+      </div>
+    </div>
+
+    <h3 class="sub">Tabs, badges, avatares</h3>
+    <div class="grid g2">
+      <div class="panel">
+        <div class="tabs"><button class="on">Resumen</button><button>Evoluciones</button><button>Adjuntos</button></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">
+          <span class="badge badge-primary"><span class="dot" style="background:var(--bronze-500)"></span>Activo</span>
+          <span class="badge badge-success"><span class="dot" style="background:var(--success-500)"></span>Alta</span>
+          <span class="badge badge-warning"><span class="dot" style="background:var(--warning-500)"></span>Pendiente</span>
+          <span class="badge badge-error"><span class="dot" style="background:var(--error-500)"></span>Cancelada</span>
+          <span class="badge badge-info"><span class="dot" style="background:var(--info-500)"></span>Nota</span>
+          <span class="badge badge-neutral">Borrador</span>
+        </div>
+      </div>
+      <div class="panel">
+        <div style="display:flex;align-items:center;gap:-8px">
+          <span class="av">MR</span><span class="av" style="margin-left:-8px;background:linear-gradient(135deg,var(--plum-300),var(--plum-600))">JT</span><span class="av" style="margin-left:-8px;background:linear-gradient(135deg,var(--info-500),var(--info-700))">LS</span>
+          <span class="av" style="margin-left:-8px;background:var(--muted);color:var(--muted-foreground)">+4</span>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:10px;align-items:center">
+          <span class="tt"><button class="btn btn-outline btn-sm">Hover me</button><span class="bub">Tooltip · Radix</span></span>
+          <div class="crumb"><a>Pacientes</a><span>/</span><a>M. Restrepo</a><span>/</span><span class="cur">Historia</span></div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub">Alertas y toasts</h3>
+    <div class="grid g2">
+      <div class="alertbox" style="background:var(--info-50);border-color:var(--info-100);color:var(--info-900)"><svg viewBox="0 0 24 24" style="stroke:var(--info-600);fill:none;stroke-width:2"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v4h1"/></svg><div><strong>Recordatorio.</strong> El paciente tiene una valoración pendiente de firma.</div></div>
+      <div class="alertbox" style="background:var(--success-50);border-color:var(--success-100);color:var(--success-900)"><svg viewBox="0 0 24 24" style="stroke:var(--success-600);fill:none;stroke-width:2"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg><div><strong>Cita agendada.</strong> Martes 22, 3:00 p. m. con Laura.</div></div>
+      <div class="alertbox" style="background:var(--warning-50);border-color:var(--warning-100);color:var(--warning-900)"><svg viewBox="0 0 24 24" style="stroke:var(--warning-600);fill:none;stroke-width:2"><path d="M12 3 2 20h20L12 3Z"/><path d="M12 9v5M12 17h.01"/></svg><div><strong>Copago pendiente.</strong> Registra el pago antes de cerrar caja.</div></div>
+      <div class="alertbox" style="background:var(--error-50);border-color:var(--error-100);color:var(--error-900)"><svg viewBox="0 0 24 24" style="stroke:var(--error-600);fill:none;stroke-width:2"><circle cx="12" cy="12" r="9"/><path d="M12 8v5M12 16h.01"/></svg><div><strong>No se pudo guardar.</strong> Revisa el campo Dolor (EVA).</div></div>
+    </div>
+
+    <h3 class="sub">Tabla y paginación</h3>
+    <div class="tablewrap">
+      <table class="spec">
+        <thead><tr><th>Paciente</th><th>Documento</th><th>Última cita</th><th>Estado</th><th>Terapeuta</th></tr></thead>
+        <tbody>
+          <tr><td style="display:flex;align-items:center;gap:10px"><span class="av" style="width:28px;height:28px;font-size:11px">MR</span> María Restrepo</td><td class="mono">1013·4821</td><td>18 jul 2026</td><td><span class="badge badge-success">Activo</span></td><td>Laura S.</td></tr>
+          <tr><td style="display:flex;align-items:center;gap:10px"><span class="av" style="width:28px;height:28px;font-size:11px;background:linear-gradient(135deg,var(--plum-300),var(--plum-600))">JT</span> Julián Tobón</td><td class="mono">7198·2043</td><td>15 jul 2026</td><td><span class="badge badge-warning">Pendiente</span></td><td>Laura S.</td></tr>
+          <tr><td style="display:flex;align-items:center;gap:10px"><span class="av" style="width:28px;height:28px;font-size:11px;background:linear-gradient(135deg,var(--info-500),var(--info-700))">LC</span> Lucía Cano</td><td class="mono">1002·5567</td><td>11 jul 2026</td><td><span class="badge badge-neutral">Alta</span></td><td>Laura S.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;flex-wrap:wrap;gap:12px">
+      <span class="muted" style="font-size:13px">Mostrando 1–3 de 48 pacientes</span>
+      <div class="pag"><button>‹</button><button class="on">1</button><button>2</button><button>3</button><button>…</button><button>16</button><button>›</button></div>
+    </div>
+
+    <h3 class="sub">Progreso, skeleton, acordeón</h3>
+    <div class="grid g3">
+      <div class="panel">
+        <h4 class="min" style="margin-top:0">Progreso</h4>
+        <div class="prog"><i style="width:68%"></i></div>
+        <div class="muted" style="font-size:12px;margin-top:8px">Plan de tratamiento · 68%</div>
+        <div class="prog" style="margin-top:14px"><i style="width:30%;background:var(--success-600)"></i></div>
+        <div class="muted" style="font-size:12px;margin-top:8px">Recuperación de rango · 30%</div>
+      </div>
+      <div class="panel">
+        <h4 class="min" style="margin-top:0">Skeleton</h4>
+        <div class="sk" style="height:12px;width:70%"></div>
+        <div class="sk" style="height:12px;width:100%;margin-top:9px"></div>
+        <div class="sk" style="height:12px;width:85%;margin-top:9px"></div>
+        <div class="sk" style="height:36px;width:100%;margin-top:14px"></div>
+      </div>
+      <div class="panel">
+        <h4 class="min" style="margin-top:0">Acordeón</h4>
+        <div class="acc-item"><div class="acc-head">Antecedentes <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--muted-foreground);fill:none;stroke-width:2"><path d="m6 9 6 6 6-6"/></svg></div><div class="acc-body">HTA controlada. Sin cirugías previas relevantes.</div></div>
+        <div class="acc-item"><div class="acc-head">Exploración <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--muted-foreground);fill:none;stroke-width:2"><path d="m18 15-6-6-6 6"/></svg></div></div>
+      </div>
+    </div>
+
+    <h3 class="sub">Command Palette &amp; búsqueda</h3>
+    <div class="cmd">
+      <div class="cmd-search"><svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:var(--muted-foreground);fill:none;stroke-width:1.8"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><input placeholder="Buscar paciente, cita o acción…" value=""><span class="kbd" style="font-family:var(--font-mono);font-size:10px;color:var(--muted-foreground);border:1px solid var(--border);border-radius:4px;padding:1px 6px">⌘K</span></div>
+      <div class="cmd-item on"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg> Nuevo paciente <span class="kbd">⌘N</span></div>
+      <div class="cmd-item"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg> Agendar cita <span class="kbd">⌘A</span></div>
+      <div class="cmd-item"><svg viewBox="0 0 24 24"><path d="M8 3h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="M9 3v3h6V3"/></svg> Abrir historia clínica</div>
+    </div>
+
+    <h3 class="sub">Gráficos</h3>
+    <div class="grid g2">
+      <div class="panel">
+        <h4 class="min" style="margin-top:0">Citas por semana</h4>
+        <div class="bar"><div class="col" style="height:40%"></div><div class="col" style="height:65%"></div><div class="col" style="height:52%"></div><div class="col" style="height:80%"></div><div class="col" style="height:70%"></div><div class="col mut" style="height:34%"></div><div class="col mut" style="height:20%"></div></div>
+        <div class="muted" style="font-size:11px;font-family:var(--font-mono);display:flex;justify-content:space-between;margin-top:6px"><span>L</span><span>M</span><span>M</span><span>J</span><span>V</span><span>S</span><span>D</span></div>
+      </div>
+      <div class="panel">
+        <h4 class="min" style="margin-top:0">Paleta de datos</h4>
+        <p class="muted" style="font-size:13px">Series: cobre (principal), orquídea, info, éxito, ámbar. Un solo tono saturado por gráfico; el resto en variantes 300–400 para no competir.</p>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <span style="width:28px;height:28px;border-radius:6px;background:var(--bronze-500)"></span>
+          <span style="width:28px;height:28px;border-radius:6px;background:var(--plum-400)"></span>
+          <span style="width:28px;height:28px;border-radius:6px;background:var(--info-500)"></span>
+          <span style="width:28px;height:28px;border-radius:6px;background:var(--success-500)"></span>
+          <span style="width:28px;height:28px;border-radius:6px;background:var(--warning-500)"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- =========================== 10 ESTADOS =========================== -->
+  <section class="section" id="estados">
+    <div class="eyebrow">10 · Componentes</div>
+    <h2 class="title">Estados de interacción</h2>
+    <p class="lead">Todo componente interactivo define nueve estados. La regla: el cambio de estado siempre es perceptible pero nunca brusco.</p>
+    <div class="tablewrap" style="margin-top:24px">
+      <table class="spec">
+        <thead><tr><th>Estado</th><th>Qué cambia</th><th>Ejemplo (botón primario)</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Default</strong></td><td>Reposo. Cobre 600, sombra xs.</td><td><button class="btn btn-primary btn-sm">Guardar</button></td></tr>
+          <tr><td><strong>Hover</strong></td><td>Fondo un paso más oscuro (700). 120ms.</td><td><button class="btn btn-primary btn-sm" style="background:var(--bronze-700)">Guardar</button></td></tr>
+          <tr><td><strong>Focus</strong></td><td>Ring de 2px cobre + offset 2px.</td><td><button class="btn btn-primary btn-sm" style="outline:2px solid var(--ring);outline-offset:2px">Guardar</button></td></tr>
+          <tr><td><strong>Pressed</strong></td><td>translateY 0.5px + brillo −4%.</td><td><button class="btn btn-primary btn-sm" style="background:var(--bronze-800);transform:translateY(1px)">Guardar</button></td></tr>
+          <tr><td><strong>Disabled</strong></td><td>Opacidad 50%, sin puntero.</td><td><button class="btn btn-primary btn-sm" disabled>Guardar</button></td></tr>
+          <tr><td><strong>Loading</strong></td><td>Spinner + texto; ancho estable.</td><td><button class="btn btn-primary btn-sm"><span style="width:13px;height:13px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;display:inline-block;animation:sp .7s linear infinite"></span> Guardando</button></td></tr>
+          <tr><td><strong>Error</strong></td><td>Borde/anillo destructive; mensaje.</td><td><input class="input err" style="height:32px;max-width:160px" value="—"></td></tr>
+          <tr><td><strong>Success</strong></td><td>Confirmación breve, luego reposo.</td><td><button class="btn btn-sm" style="background:var(--success-600);color:#fff">✓ Guardado</button></td></tr>
+          <tr><td><strong>Selected</strong></td><td>Fondo accent + borde/anillo cobre.</td><td><span class="chip" style="border-color:var(--bronze-400);background:var(--accent);color:var(--accent-foreground)">Seleccionado</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <style>@keyframes sp{to{transform:rotate(360deg)}}</style>
+    <div class="callout" style="margin-top:20px">Foco siempre visible por teclado (<code class="inline">:focus-visible</code>). El anillo usa <code class="inline">--ring</code> (cobre) con 2px de grosor y 2px de offset — cumple el mínimo de 3:1 de contraste no textual.</div>
+  </section>
+
+  <!-- =========================== 11 MOTION =========================== -->
+  <section class="section" id="motion">
+    <div class="eyebrow">11 · Componentes</div>
+    <h2 class="title">Motion design</h2>
+    <p class="lead">El movimiento confirma acciones y orienta; no entretiene. Rápido, con curvas naturales, y siempre respeta <code class="inline">prefers-reduced-motion</code>.</p>
+    <div class="grid g2" style="margin-top:24px">
+      <div class="panel">
+        <h4 class="min" style="margin-top:0">Duraciones</h4>
+        <table class="spec"><tbody>
+          <tr><td class="mono">fast · 120ms</td><td>hover, cambios de color, tabs</td></tr>
+          <tr><td class="mono">base · 180ms</td><td>toggles, popover, tooltip</td></tr>
+          <tr><td class="mono">mod · 240ms</td><td>dialog, dropdown, acordeón</td></tr>
+          <tr><td class="mono">slow · 320ms</td><td>drawer, transición de página</td></tr>
+        </tbody></table>
+      </div>
+      <div class="panel">
+        <h4 class="min" style="margin-top:0">Easings</h4>
+        <table class="spec"><tbody>
+          <tr><td class="mono">standard</td><td>cubic-bezier(.2,0,0,1) — general</td></tr>
+          <tr><td class="mono">out</td><td>cubic-bezier(.16,1,.3,1) — entradas</td></tr>
+          <tr><td class="mono">in-out</td><td>cubic-bezier(.65,0,.35,1) — movimientos</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+    <h3 class="sub">Patrones de transición</h3>
+    <div class="grid g3">
+      <div class="panel"><h4 class="min" style="margin-top:0">Fade</h4><p class="muted" style="font-size:13px">Tooltips, toasts. Opacidad 0→1, 120–180ms, ease-out.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Scale + Fade</h4><p class="muted" style="font-size:13px">Dialog, popover, command palette. Scale .96→1 + fade, 240ms ease-out.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Slide</h4><p class="muted" style="font-size:13px">Drawer (desde borde), 320ms in-out. Menú lateral y hoja de detalle.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Hover lift</h4><p class="muted" style="font-size:13px">Tarjetas clicables: sombra xs→sm + translateY −1px, 120ms.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Skeleton shimmer</h4><p class="muted" style="font-size:13px">1.4s loop lineal. Solo durante carga real, nunca decorativo.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Reduced motion</h4><p class="muted" style="font-size:13px">Con la preferencia activa: sin translate/scale; solo fades de ≤120ms.</p></div>
+    </div>
+  </section>
+  <!-- =========================== 12 DASHBOARD =========================== -->
+  <section class="section" id="dashboard">
+    <div class="eyebrow">12 · Producto</div>
+    <h2 class="title">Dashboard</h2>
+    <p class="lead">La primera pantalla tras el login. Responde a una pregunta: «¿qué necesita mi atención hoy?». Densidad calmada, un solo acento de acción, escaneo en menos de cinco segundos.</p>
+
+    <div class="mock" style="margin-top:26px">
+      <div class="mock-topbar"><div class="dot3"><i></i><i></i><i></i></div><div style="margin-left:8px;font-size:12px;color:var(--muted-foreground);font-family:var(--font-mono)">app.laurasaldarriaga.co /panel</div></div>
+      <div style="display:grid;grid-template-columns:190px 1fr;min-height:380px">
+        <!-- sidebar -->
+        <div style="background:var(--sidebar);border-right:1px solid var(--border);padding:16px 12px">
+          <div style="display:flex;align-items:center;gap:8px;padding:0 6px 14px">
+            <svg width="24" height="24" viewBox="0 0 64 64" fill="none"><circle cx="35" cy="19" r="4.4" fill="#B67A44"/><path d="M31 25C31 34 27 40 22 46M35 25C35 33 39 39 44 44" stroke="#B67A44" stroke-width="3.4" stroke-linecap="round"/><path d="M13 34C22 30 30 31 33 37C36 31 44 30 52 35" stroke="#9C6438" stroke-width="3.4" stroke-linecap="round"/></svg>
+            <span style="font-family:var(--font-serif);font-weight:600;font-size:14px">Laura S.</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:8px;background:var(--accent);color:var(--accent-foreground);font-size:12.5px;font-weight:500"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Panel</div>
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 10px;font-size:12.5px;color:var(--sidebar-foreground)"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>Agenda</div>
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 10px;font-size:12.5px;color:var(--sidebar-foreground)"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Pacientes</div>
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 10px;font-size:12.5px;color:var(--sidebar-foreground)"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>Caja</div>
+          <div style="display:flex;align-items:center;gap:9px;padding:8px 10px;font-size:12.5px;color:var(--sidebar-foreground)"><svg viewBox="0 0 24 24" style="width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>Ajustes</div>
+        </div>
+        <!-- content -->
+        <div style="padding:20px 22px">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px">
+            <div><div style="font-size:18px;font-weight:600;letter-spacing:-.01em">Buenos días, Laura</div><div style="font-size:12px;color:var(--muted-foreground)">Martes 21 de julio · 6 citas hoy</div></div>
+            <button class="btn btn-primary btn-sm">+ Nueva cita</button>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
+            <div class="kpi"><div class="lbl"><svg viewBox="0 0 24 24" style="width:13px;height:13px;stroke:var(--muted-foreground);fill:none;stroke-width:1.8"><rect x="3" y="5" width="18" height="16" rx="2"/></svg>Citas hoy</div><div class="val">6</div><div class="trend" style="color:var(--success-600)">▲ 2 vs. ayer</div></div>
+            <div class="kpi"><div class="lbl">Pacientes activos</div><div class="val">48</div><div class="trend" style="color:var(--muted-foreground)">3 nuevos esta semana</div></div>
+            <div class="kpi"><div class="lbl">Caja del día</div><div class="val" style="font-size:22px">$ 640.000</div><div class="trend" style="color:var(--warning-600)">1 copago pendiente</div></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:12px;margin-top:12px">
+            <div class="panel" style="padding:15px">
+              <div style="font-size:13px;font-weight:600;margin-bottom:10px">Agenda de hoy</div>
+              <div style="display:flex;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)"><span class="mono" style="font-size:11px;color:var(--bronze-600);width:44px">09:00</span><span class="av" style="width:24px;height:24px;font-size:10px">MR</span><span style="font-size:12.5px">M. Restrepo · Descarga</span><span class="badge badge-success" style="margin-left:auto">Confirm.</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:7px 0;border-bottom:1px solid var(--border)"><span class="mono" style="font-size:11px;color:var(--bronze-600);width:44px">10:00</span><span class="av" style="width:24px;height:24px;font-size:10px;background:linear-gradient(135deg,var(--plum-300),var(--plum-600))">JT</span><span style="font-size:12.5px">J. Tobón · Ventosas</span><span class="badge badge-warning" style="margin-left:auto">Por llegar</span></div>
+              <div style="display:flex;gap:10px;align-items:center;padding:7px 0"><span class="mono" style="font-size:11px;color:var(--bronze-600);width:44px">11:30</span><span class="av" style="width:24px;height:24px;font-size:10px;background:linear-gradient(135deg,var(--info-500),var(--info-700))">LC</span><span style="font-size:12.5px">L. Cano · Valoración</span></div>
+            </div>
+            <div class="panel" style="padding:15px">
+              <div style="font-size:13px;font-weight:600;margin-bottom:10px">Alertas</div>
+              <div class="alertbox" style="background:var(--warning-50);border-color:var(--warning-100);color:var(--warning-900);padding:9px 11px;font-size:12px"><div>Copago pendiente · J. Tobón</div></div>
+              <div class="alertbox" style="background:var(--info-50);border-color:var(--info-100);color:var(--info-900);padding:9px 11px;font-size:12px;margin-top:8px"><div>2 valoraciones sin firmar</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="sub">Anatomía y lineamientos</h3>
+    <div class="grid g2">
+      <div class="panel"><h4 class="min" style="margin-top:0">Sidebar</h4><p class="muted" style="font-size:13px">264px, fondo <code class="inline">--sidebar</code>. Ítem activo con fondo accent + texto cobre; el resto en neutro. Ícono 16–18px. Colapsable a 64px (solo íconos + tooltip).</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Header</h4><p class="muted" style="font-size:13px">Saludo contextual + fecha + un único CTA primario a la derecha. Búsqueda global (⌘K) y avatar de usuario. Sticky con blur.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">KPIs</h4><p class="muted" style="font-size:13px">Máximo 3–4. Valor grande (26px/600), etiqueta pequeña, tendencia con color semántico (verde/ámbar/rojo). Sin rellenos de color.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Módulos</h4><p class="muted" style="font-size:13px">Agenda del día, próximas citas, pacientes recientes, alertas y notificaciones. Cada uno en tarjeta; jerarquía por tamaño, no por color.</p></div>
+    </div>
+  </section>
+
+  <!-- =========================== 13 HISTORIA CLÍNICA =========================== -->
+  <section class="section" id="historia">
+    <div class="eyebrow">13 · Producto</div>
+    <h2 class="title">Historia clínica</h2>
+    <p class="lead">Formularios largos que deben sentirse ligeros. La clave: seccionar, dar aire, y hacer que las escalas clínicas (EVA, fuerza, rango) sean rápidas de registrar con controles visuales, no cajas de texto.</p>
+
+    <div class="grid g2" style="margin-top:24px">
+      <div class="panel">
+        <h4 class="min" style="margin-top:0">Estructura de secciones</h4>
+        <p class="muted" style="font-size:13px">Anamnesis · Antecedentes · Exploración física · Diagnóstico fisioterapéutico · Plan de tratamiento · Evoluciones. Cada sección con título H3, separador y ancla en un índice lateral pegajoso.</p>
+      </div>
+      <div class="panel">
+        <h4 class="min" style="margin-top:0">Campos y obligatoriedad</h4>
+        <p class="muted" style="font-size:13px">Label en 13px/500. Obligatorio marcado con punto cobre <span style="color:var(--bronze-600)">•</span> tras la etiqueta (no asterisco rojo, que alarma). Autoguardado con sello «Guardado hace 2 s».</p>
+      </div>
+    </div>
+
+    <h3 class="sub">Escala EVA de dolor (0–10)</h3>
+    <div class="panel">
+      <label class="field-label">Dolor referido <span style="color:var(--bronze-600)">•</span></label>
+      <div class="eva">
+        <i style="background:#3E9B6B">0</i><i style="background:#5DA85C">1</i><i style="background:#8FB84E">2</i><i style="background:#BCC145">3</i><i style="background:#E0A32E">4</i><i style="background:#E08E2E;outline:2px solid var(--foreground);outline-offset:2px">5</i><i style="background:#DE7A32">6</i><i style="background:#D96538">7</i><i style="background:#D2523E">8</i><i style="background:#C33F3A">9</i><i style="background:#B93A34">10</i>
+      </div>
+      <div class="field-hint">Verde = sin dolor · rojo = dolor máximo. El valor seleccionado se resalta con anillo. Mismo patrón para fuerza (0–5) y satisfacción.</div>
+    </div>
+
+    <div class="grid g3" style="margin-top:16px">
+      <div class="panel"><h4 class="min" style="margin-top:0">Movilidad y fuerza</h4><p class="muted" style="font-size:13px">Steppers segmentados (0–5) por grupo muscular. Comparativa lado izq./der. en dos columnas alineadas.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Rangos articulares</h4><p class="muted" style="font-size:13px">Input numérico en grados con unidad fija <code class="inline">°</code>, ícono de articulación y goniómetro de referencia opcional.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Observaciones</h4><p class="muted" style="font-size:13px">Textarea que crece con el contenido, ancho ≤ 70ch, contador discreto y soporte de plantillas rápidas.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Adjuntos</h4><p class="muted" style="font-size:13px">Dropzone punteada; miniaturas con nombre, peso y progreso. Imágenes y PDF de estudios.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Fotografías clínicas</h4><p class="muted" style="font-size:13px">Galería con fecha y etiqueta de región. Aviso de consentimiento visible antes de subir.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Firmas</h4><p class="muted" style="font-size:13px">Panel de firma (paciente y profesional) con sello de fecha/hora y bloqueo del registro tras firmar.</p></div>
+    </div>
+    <div class="callout plum" style="margin-top:20px">Patrón «columna vertebral»: un índice lateral pegajoso con puntos (guiño al logo) marca la sección activa y el progreso de llenado del formulario.</div>
+  </section>
+  <!-- =========================== 14 PANTALLAS =========================== -->
+  <section class="section" id="pantallas">
+    <div class="eyebrow">14 · Producto</div>
+    <h2 class="title">Diseño de pantallas</h2>
+    <p class="lead">Cada vista tiene un trabajo. Estos son los lineamientos por pantalla; todas comparten sidebar, header sticky, y el mismo lenguaje de tarjetas, tablas y estados vacíos.</p>
+
+    <div class="grid g2" style="margin-top:24px">
+      <div class="panel"><h4 class="min" style="margin-top:0">Login</h4><p class="muted" style="font-size:13px">Pantalla dividida: a la izquierda, marca sobre fondo cobre degradado con el wordmark en Cormorant y el lema «Tu bienestar es lo más importante». A la derecha, formulario mínimo (correo, contraseña, entrar) centrado, sin ruido.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Dashboard</h4><p class="muted" style="font-size:13px">Saludo + KPIs + agenda del día + alertas. Ver sección 12.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Agenda</h4><p class="muted" style="font-size:13px">Vista día/semana con franjas horarias. Bloques de cita en cobre tenue; estados por borde de color. Arrastrar para reagendar. Panel lateral de detalle al hacer clic.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Calendario</h4><p class="muted" style="font-size:13px">Vista mensual para planeación. Densidad de citas por punto/contador; hoy resaltado con anillo cobre.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Lista de pacientes</h4><p class="muted" style="font-size:13px">Tabla con búsqueda, filtros (estado, terapeuta) y orden. Fila con avatar, documento mono, última cita y estado. Acción rápida al final de fila.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Perfil del paciente</h4><p class="muted" style="font-size:13px">Cabecera con avatar, datos clave y acciones. Tabs: Resumen · Historia · Evoluciones · Adjuntos · Facturación. Barra de progreso del plan.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Historia clínica</h4><p class="muted" style="font-size:13px">Formulario seccionado con índice pegajoso. Ver sección 13.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Evoluciones</h4><p class="muted" style="font-size:13px">Línea de tiempo vertical: cada nota con fecha (mono), autor y resumen; expandible. El punto de la línea usa el motivo de columna.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Reportes / Estadísticas</h4><p class="muted" style="font-size:13px">Filtros de rango arriba; grillas de KPIs y gráficos (barras/líneas) en paleta de datos. Exportar a PDF con portada de marca.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Facturación &amp; Caja</h4><p class="muted" style="font-size:13px">Tabla de movimientos, apertura/cierre de caja, copagos pendientes en ámbar. Recibo con firma y sello.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Inventario</h4><p class="muted" style="font-size:13px">Insumos y equipos con nivel de stock (barra + badge). Alerta ámbar por bajo stock.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Usuarios y Roles</h4><p class="muted" style="font-size:13px">Lista de usuarios con rol (badge) y estado. Matriz de permisos con switches por módulo. Configuración en formularios seccionados.</p></div>
+    </div>
+    <div class="callout" style="margin-top:20px">Estados vacíos: nunca una pantalla en blanco. Ilustración lineal en cobre + una frase clara + un botón que inicia la acción («Aún no hay pacientes. Registra el primero»).</div>
+  </section>
+
+  <!-- =========================== 15 ACCESIBILIDAD =========================== -->
+  <section class="section" id="accesibilidad">
+    <div class="eyebrow">15 · Producto</div>
+    <h2 class="title">Accesibilidad &amp; UX</h2>
+    <p class="lead">El sistema cumple <strong>WCAG 2.1 AA</strong>. La accesibilidad no es una capa final: está horneada en los tokens, los tamaños y los estados.</p>
+    <div class="grid g2" style="margin-top:24px">
+      <div class="panel"><h4 class="min" style="margin-top:0">Contraste</h4><p class="muted" style="font-size:13px">Texto normal ≥ 4.5:1, texto grande y elementos de UI ≥ 3:1. <code class="inline">--foreground</code> sobre <code class="inline">--background</code> = 12:1. Nunca color como único portador de significado (siempre ícono o texto).</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Focus ring</h4><p class="muted" style="font-size:13px">Visible en todo elemento interactivo vía <code class="inline">:focus-visible</code>. Anillo cobre 2px + offset 2px, ≥ 3:1 contra el fondo.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Tamaño mínimo</h4><p class="muted" style="font-size:13px">Blancos táctiles ≥ 40×40px; en móvil 44×44px. Texto de UI nunca por debajo de 12px.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Teclado</h4><p class="muted" style="font-size:13px">Toda acción alcanzable por teclado; orden de tabulación lógico; ⌘K para búsqueda; Esc cierra capas; trampa de foco en modales (Radix).</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Modo claro / oscuro</h4><p class="muted" style="font-size:13px">Paridad total de tokens. El oscuro no es una inversión: superficies cálidas escalonadas y cobre aclarado (400) para mantener contraste.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Reducción de movimiento</h4><p class="muted" style="font-size:13px"><code class="inline">prefers-reduced-motion</code> elimina translate/scale; conserva solo fades breves. Ninguna información depende de la animación.</p></div>
+    </div>
+    <h3 class="sub">Reglas de UX transversales</h3>
+    <div class="grid g3">
+      <div class="panel"><h4 class="min" style="margin-top:0">Jerarquía</h4><p class="muted" style="font-size:13px">Un solo elemento primario por vista. Tamaño y peso antes que color.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Feedback</h4><p class="muted" style="font-size:13px">Toda acción confirma en ≤ 240ms: toast, cambio de estado o inline. Nunca silencio.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Consistencia</h4><p class="muted" style="font-size:13px">Un verbo, un componente, un patrón por concepto en todo el producto.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Prevención</h4><p class="muted" style="font-size:13px">Confirmación solo para lo irreversible (eliminar, cerrar caja). Autoguardado en formularios largos.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Responsive</h4><p class="muted" style="font-size:13px">Sidebar colapsa a drawer bajo 1024px; tablas se vuelven tarjetas apiladas en móvil.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">Microinteracciones</h4><p class="muted" style="font-size:13px">Sutiles y funcionales: hover lift en tarjetas, check animado al guardar, contador que sube.</p></div>
+    </div>
+  </section>
+  <!-- =========================== 16 TOKENS =========================== -->
+  <section class="section" id="tokens">
+    <div class="eyebrow">16 · Implementación</div>
+    <h2 class="title">Tokens · CSS &amp; Tailwind v4</h2>
+    <p class="lead">Configuración lista para <strong>Tailwind v4 + shadcn/ui</strong>. Todo vive en <code class="inline">globals.css</code>: las variables en <code class="inline">:root</code>/<code class="inline">.dark</code> y el mapeo a utilidades con <code class="inline">@theme inline</code>. Se entrega el archivo completo por separado; abajo, la estructura esencial.</p>
+
+    <pre class="code" style="margin-top:24px"><span class="c">/* globals.css — Tailwind v4 + shadcn/ui */</span>
+<span class="k">@import</span> <span class="v">"tailwindcss"</span>;
+<span class="k">@custom-variant</span> dark (&:is(.dark *));
+
+<span class="k">:root</span> {
+  <span class="c">/* Radio base — shadcn deriva sm/md/lg/xl */</span>
+  <span class="k">--radius</span>: <span class="v">0.625rem</span>;
+  <span class="c">/* Semánticos (light) */</span>
+  <span class="k">--background</span>: <span class="v">#FBFAF8</span>;   <span class="k">--foreground</span>: <span class="v">#262320</span>;
+  <span class="k">--card</span>: <span class="v">#FFFFFF</span>;         <span class="k">--card-foreground</span>: <span class="v">#262320</span>;
+  <span class="k">--popover</span>: <span class="v">#FFFFFF</span>;      <span class="k">--popover-foreground</span>: <span class="v">#262320</span>;
+  <span class="k">--primary</span>: <span class="v">#9C6438</span>;      <span class="k">--primary-foreground</span>: <span class="v">#FFFFFF</span>;
+  <span class="k">--secondary</span>: <span class="v">#F4F3F1</span>;    <span class="k">--secondary-foreground</span>: <span class="v">#3A3733</span>;
+  <span class="k">--muted</span>: <span class="v">#F4F3F1</span>;        <span class="k">--muted-foreground</span>: <span class="v">#6B665E</span>;
+  <span class="k">--accent</span>: <span class="v">#F3E9DB</span>;       <span class="k">--accent-foreground</span>: <span class="v">#7D4F2E</span>;
+  <span class="k">--destructive</span>: <span class="v">#D24B43</span>;  <span class="k">--destructive-foreground</span>: <span class="v">#FFFFFF</span>;
+  <span class="k">--border</span>: <span class="v">#E8E6E2</span>;       <span class="k">--input</span>: <span class="v">#E8E6E2</span>;   <span class="k">--ring</span>: <span class="v">#9C6438</span>;
+  <span class="c">/* Sidebar */</span>
+  <span class="k">--sidebar</span>: <span class="v">#F7F5F2</span>;      <span class="k">--sidebar-foreground</span>: <span class="v">#514D46</span>;
+  <span class="k">--sidebar-primary</span>: <span class="v">#9C6438</span>; <span class="k">--sidebar-accent</span>: <span class="v">#EFEBE4</span>;
+  <span class="c">/* + escalas bronze/stone/plum + success/warning/error/info + charts */</span>
+}
+
+<span class="k">.dark</span> {
+  <span class="k">--background</span>: <span class="v">#16140F</span>;   <span class="k">--foreground</span>: <span class="v">#EDEBE6</span>;
+  <span class="k">--card</span>: <span class="v">#201D18</span>;         <span class="k">--primary</span>: <span class="v">#C6935F</span>;
+  <span class="k">--primary-foreground</span>: <span class="v">#2A1B10</span>; <span class="k">--border</span>: <span class="v">#322E28</span>;
+  <span class="k">--muted-foreground</span>: <span class="v">#A8A29A</span>;  <span class="k">--ring</span>: <span class="v">#C6935F</span>;
+  <span class="c">/* … resto de semánticos en modo oscuro */</span>
+}
+
+<span class="k">@theme inline</span> {
+  <span class="k">--color-background</span>: <span class="v">var(--background)</span>;
+  <span class="k">--color-foreground</span>: <span class="v">var(--foreground)</span>;
+  <span class="k">--color-primary</span>: <span class="v">var(--primary)</span>;
+  <span class="k">--color-primary-foreground</span>: <span class="v">var(--primary-foreground)</span>;
+  <span class="k">--color-border</span>: <span class="v">var(--border)</span>;   <span class="k">--color-ring</span>: <span class="v">var(--ring)</span>;
+  <span class="c">/* … mapea cada token semántico a --color-* */</span>
+  <span class="k">--radius-sm</span>: <span class="v">calc(var(--radius) - 4px)</span>;
+  <span class="k">--radius-md</span>: <span class="v">calc(var(--radius) - 2px)</span>;
+  <span class="k">--radius-lg</span>: <span class="v">var(--radius)</span>;
+  <span class="k">--radius-xl</span>: <span class="v">calc(var(--radius) + 4px)</span>;
+  <span class="k">--font-sans</span>: <span class="v">"Geist", "Inter", sans-serif</span>;
+  <span class="k">--font-serif</span>: <span class="v">"Cormorant Garamond", serif</span>;
+  <span class="k">--font-mono</span>: <span class="v">"Geist Mono", monospace</span>;
+}</pre>
+
+    <div class="grid g3" style="margin-top:20px">
+      <div class="panel"><h4 class="min" style="margin-top:0">colors</h4><p class="muted" style="font-size:12.5px">Semánticos + escalas bronze/stone/plum + success/warning/error/info + chart-1…5.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">radius / spacing</h4><p class="muted" style="font-size:12.5px"><code class="inline">--radius</code> 0.625rem; spacing hereda la escala 4px de Tailwind.</p></div>
+      <div class="panel"><h4 class="min" style="margin-top:0">shadow / ring / z</h4><p class="muted" style="font-size:12.5px">7 sombras cálidas, ring de 3px, escala z (dropdown 50 · sticky 40 · modal 100 · toast 120).</p></div>
+    </div>
+    <div class="callout" style="margin-top:20px">Con estos tokens, los componentes de shadcn/ui funcionan sin tocar su marcado: basta reemplazar el bloque de variables. Las utilidades <code class="inline">bg-primary</code>, <code class="inline">text-muted-foreground</code>, <code class="inline">border-border</code>, <code class="inline">rounded-lg</code>, etc. quedan retematizadas automáticamente.</div>
+  </section>
+
+  <footer class="footer">
+    <div><strong style="font-family:var(--font-serif);font-size:16px;color:var(--foreground)">Laura Saldarriaga · Fisioterapeuta</strong><br>Brand Book &amp; Design System · v1.0 · Medellín, Colombia</div>
+    <div style="text-align:right">React · Next.js · Tailwind v4 · shadcn/ui · Radix · Lucide<br><span class="toc-note">Diseñado para construirse leyendo este documento.</span></div>
+  </footer>
+</main>
+</div>
+
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('themeToggle');
+  function set(mode){ root.classList.toggle('dark', mode==='dark'); btn.textContent = mode==='dark' ? '☀ Modo claro' : '◐ Modo oscuro'; }
+  var pref = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  set(pref ? 'dark':'light');
+  btn.addEventListener('click', function(){ set(root.classList.contains('dark') ? 'light':'dark'); });
+  // smooth active nav
+  document.querySelectorAll('.nav a').forEach(function(a){
+    a.addEventListener('click', function(){ document.querySelectorAll('.nav a').forEach(function(x){x.style.background='';x.style.color='';}); });
+  });
+})();
+</script>
+</body>
+</html>
