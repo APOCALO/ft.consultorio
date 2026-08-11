@@ -98,24 +98,39 @@ export const getValidAccessToken = cache(
     const store = await cookies()
     const access = store.get(ACCESS_COOKIE)?.value
     const expiresAt = store.get(EXPIRES_COOKIE)?.value
-    const refresh = store.get(REFRESH_COOKIE)?.value
 
     const stillValid =
       access && expiresAt && new Date(expiresAt).getTime() - Date.now() > 30_000
-    if (stillValid) return access!
-
-    if (!refresh) return null
-
-    try {
-      const renewed = await refreshTokens(refresh)
-      await setSession(renewed)
-      return renewed.accessToken
-    } catch {
-      await clearSession()
-      return null
-    }
+    return stillValid ? access! : null
   },
 )
+
+/**
+ * Renueva la sesión usando el refresh token. **Solo debe llamarse desde un Route
+ * Handler o Server Action** (contextos donde Next permite escribir cookies): el
+ * refresh token del backend es rotativo con detección de reuso, así que la
+ * rotación DEBE persistirse o la siguiente petición dispara el reuso y cierra
+ * todas las sesiones. Por eso el refresco NO se hace durante el render
+ * (`getValidAccessToken` es de solo lectura) sino en `app/auth/refresh/route.ts`,
+ * al que el `proxy` redirige de forma proactiva cuando el access token expiró.
+ *
+ * Devuelve `true` si renovó y persistió; `false` si no había sesión o el backend
+ * la rechazó (en cuyo caso limpia las cookies).
+ */
+export async function refreshSession(): Promise<boolean> {
+  const store = await cookies()
+  const refresh = store.get(REFRESH_COOKIE)?.value
+  if (!refresh) return false
+
+  try {
+    const renewed = await refreshTokens(refresh)
+    await setSession(renewed)
+    return true
+  } catch {
+    await clearSession()
+    return false
+  }
+}
 
 /** Cierra la sesión: revoca el refresh token en el backend y limpia cookies. */
 export async function endSession(): Promise<void> {
