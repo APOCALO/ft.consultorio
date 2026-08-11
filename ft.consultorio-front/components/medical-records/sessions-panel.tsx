@@ -54,6 +54,10 @@ export function SessionsPanel({
   sessions: Session[]
 }) {
   const [creating, setCreating] = useState(false)
+  // Cuenta las aperturas: al usarla como `key` del diálogo, cada «Nueva sesión»
+  // arranca con una instancia limpia (fecha actual y estado del form vacío).
+  // Solo cambia al abrir, así que la animación de cierre se conserva.
+  const [openCount, setOpenCount] = useState(0)
 
   if (!recordId) {
     return (
@@ -75,7 +79,13 @@ export function SessionsPanel({
         <p className="text-sm text-muted-foreground">
           {sessions.length} {sessions.length === 1 ? "sesión" : "sesiones"}
         </p>
-        <Button size="sm" onClick={() => setCreating(true)}>
+        <Button
+          size="sm"
+          onClick={() => {
+            setOpenCount((n) => n + 1)
+            setCreating(true)
+          }}
+        >
           <Plus data-icon="inline-start" />
           Nueva sesión
         </Button>
@@ -94,6 +104,7 @@ export function SessionsPanel({
       )}
 
       <SessionFormDialog
+        key={openCount}
         open={creating}
         onOpenChange={setCreating}
         patientId={patientId}
@@ -205,6 +216,12 @@ function SessionFormDialog({
     emptyFormState,
   )
   const wasPending = useRef(false)
+  // El «ahora» se congela al montar. Recalcularlo en cada render haría cambiar
+  // el defaultValue al pasar el minuto sobre un input ya inicializado, que es
+  // justo de lo que avisa base-ui. Al crear, el diálogo se remonta en cada
+  // apertura (ver `openCount`), así que la hora sigue siendo la actual.
+  const [now] = useState(() => toLocalInput(new Date().toISOString()))
+  const defaultDate = toLocalInput(session?.date) ?? now
 
   useEffect(() => {
     if (wasPending.current && !isPending) {
@@ -228,7 +245,15 @@ function SessionFormDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <form action={formAction}>
+        {/* `key` remonta el form cuando cambian los datos del servidor (tras
+            guardar cambia `updatedAt`). El diálogo vive montado dentro de la
+            card, así que sin esto los `defaultValue`/`defaultChecked` mutarían
+            sobre inputs ya inicializados y base-ui avisaría por
+            "cambio tras inicializar". */}
+        <form
+          key={session ? `${session.id}:${session.updatedAt ?? session.createdAt}` : "new"}
+          action={formAction}
+        >
           <input type="hidden" name="patientId" value={patientId} />
           {isEdit ? (
             <input type="hidden" name="id" value={session!.id} />
@@ -244,9 +269,7 @@ function SessionFormDialog({
                   id="date"
                   name="date"
                   type="datetime-local"
-                  defaultValue={
-                    toLocalInput(session?.date) ?? toLocalInput(new Date().toISOString())
-                  }
+                  defaultValue={defaultDate}
                   disabled={isPending}
                 />
               </Field>

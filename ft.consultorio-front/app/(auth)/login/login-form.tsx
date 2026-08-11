@@ -32,12 +32,13 @@ export function LoginForm() {
         <Field data-invalid={!!state.fieldErrors?.email}>
           <FieldLabel htmlFor="email">Correo electrónico</FieldLabel>
           <Input
+            key={state.values?.email ?? ""}
             id="email"
             name="email"
             type="email"
             autoComplete="email"
             placeholder="tucorreo@ejemplo.com"
-            defaultValue={state.values?.email}
+            defaultValue={state.values?.email ?? ""}
             aria-invalid={!!state.fieldErrors?.email}
             disabled={isPending}
           />

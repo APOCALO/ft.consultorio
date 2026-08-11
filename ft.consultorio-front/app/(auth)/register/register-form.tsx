@@ -28,6 +28,7 @@ export function RegisterForm() {
   }, [state])
 
   const err = state.fieldErrors
+  const values = state.values
 
   return (
     <form action={formAction} noValidate>
@@ -36,10 +37,11 @@ export function RegisterForm() {
           <Field data-invalid={!!err?.firstName}>
             <FieldLabel htmlFor="firstName">Nombre</FieldLabel>
             <Input
+              key={values?.firstName ?? ""}
               id="firstName"
               name="firstName"
               autoComplete="given-name"
-              defaultValue={state.values?.firstName}
+              defaultValue={values?.firstName ?? ""}
               aria-invalid={!!err?.firstName}
               disabled={isPending}
             />
@@ -49,10 +51,11 @@ export function RegisterForm() {
           <Field data-invalid={!!err?.lastName}>
             <FieldLabel htmlFor="lastName">Apellido</FieldLabel>
             <Input
+              key={values?.lastName ?? ""}
               id="lastName"
               name="lastName"
               autoComplete="family-name"
-              defaultValue={state.values?.lastName}
+              defaultValue={values?.lastName ?? ""}
               aria-invalid={!!err?.lastName}
               disabled={isPending}
             />
@@ -63,12 +66,13 @@ export function RegisterForm() {
         <Field data-invalid={!!err?.email}>
           <FieldLabel htmlFor="email">Correo electrónico</FieldLabel>
           <Input
+            key={values?.email ?? ""}
             id="email"
             name="email"
             type="email"
             autoComplete="email"
             placeholder="tucorreo@ejemplo.com"
-            defaultValue={state.values?.email}
+            defaultValue={values?.email ?? ""}
             aria-invalid={!!err?.email}
             disabled={isPending}
           />
@@ -78,7 +82,8 @@ export function RegisterForm() {
         <Field data-invalid={!!err?.birthDate}>
           <FieldLabel htmlFor="birthDate">Fecha de nacimiento</FieldLabel>
           <BirthDatePicker
-            defaultValue={state.values?.birthDate}
+            key={values?.birthDate ?? ""}
+            defaultValue={values?.birthDate}
             invalid={!!err?.birthDate}
             disabled={isPending}
           />

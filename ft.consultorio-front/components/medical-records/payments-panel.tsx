@@ -52,6 +52,9 @@ export function PaymentsPanel({
   sessions: Session[]
 }) {
   const [open, setOpen] = useState(false)
+  // Igual que en las sesiones: cada apertura remonta el diálogo para que la
+  // fecha por defecto sea la de hoy y el form arranque limpio.
+  const [openCount, setOpenCount] = useState(0)
   const total = payments.reduce((sum, p) => sum + p.amount, 0)
 
   return (
@@ -61,7 +64,13 @@ export function PaymentsPanel({
           {payments.length} {payments.length === 1 ? "pago" : "pagos"} ·{" "}
           <span className="font-medium text-foreground">{money(total)}</span> recaudado
         </p>
-        <Button size="sm" onClick={() => setOpen(true)}>
+        <Button
+          size="sm"
+          onClick={() => {
+            setOpenCount((n) => n + 1)
+            setOpen(true)
+          }}
+        >
           <Plus data-icon="inline-start" />
           Registrar pago
         </Button>
@@ -103,6 +112,7 @@ export function PaymentsPanel({
       )}
 
       <PaymentDialog
+        key={openCount}
         open={open}
         onOpenChange={setOpen}
         patientId={patientId}
@@ -128,6 +138,9 @@ function PaymentDialog({
     emptyFormState,
   )
   const wasPending = useRef(false)
+  // Congelado al montar: recalcularlo en cada render cambiaría el defaultValue
+  // al pasar la medianoche sobre un input ya inicializado.
+  const [today] = useState(() => new Date().toISOString().slice(0, 10))
 
   useEffect(() => {
     if (wasPending.current && !isPending) {
@@ -159,12 +172,13 @@ function PaymentDialog({
               <Field data-invalid={!!err?.amount}>
                 <FieldLabel htmlFor="amount">Monto</FieldLabel>
                 <Input
+                  key={state.values?.amount ?? ""}
                   id="amount"
                   name="amount"
                   type="number"
                   min={0}
                   step="1000"
-                  defaultValue={state.values?.amount}
+                  defaultValue={state.values?.amount ?? ""}
                   aria-invalid={!!err?.amount}
                   disabled={isPending}
                 />
@@ -200,7 +214,7 @@ function PaymentDialog({
                 id="paidAt"
                 name="paidAt"
                 type="date"
-                defaultValue={new Date().toISOString().slice(0, 10)}
+                defaultValue={today}
                 disabled={isPending}
               />
             </Field>

@@ -64,12 +64,12 @@ namespace Ft.Consultorio.MsMedicalRecords.Domain.Sessions
             return new Session(
                 createdById,
                 medicalRecordId,
-                DateTime.SpecifyKind(date, DateTimeKind.Utc),
+                ToUtc(date),
                 painScale,
                 Clean(evolution),
                 Clean(treatmentPerformed),
                 Clean(recommendations),
-                nextAppointment,
+                ToUtc(nextAppointment),
                 price,
                 paid,
                 id);
@@ -91,12 +91,12 @@ namespace Ft.Consultorio.MsMedicalRecords.Domain.Sessions
             if (price < 0)
                 throw new ArgumentException("Price cannot be negative.", nameof(price));
 
-            Date = DateTime.SpecifyKind(date, DateTimeKind.Utc);
+            Date = ToUtc(date);
             PainScale = painScale;
             Evolution = Clean(evolution);
             TreatmentPerformed = Clean(treatmentPerformed);
             Recommendations = Clean(recommendations);
-            NextAppointment = nextAppointment;
+            NextAppointment = ToUtc(nextAppointment);
             Price = price;
             Paid = paid;
             SetAuditUpdate(updatedById);
@@ -110,5 +110,22 @@ namespace Ft.Consultorio.MsMedicalRecords.Domain.Sessions
 
         private static string? Clean(string? value) =>
             string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+
+        /// <summary>
+        /// Normaliza a UTC antes de persistir: las columnas son
+        /// `timestamp with time zone` y Npgsql rechaza `DateTimeKind.Unspecified`
+        /// (es lo que llega cuando el JSON trae una fecha sin offset, p. ej. desde
+        /// un &lt;input type="datetime-local"&gt;). `Local` se convierte; `Unspecified`
+        /// se interpreta como UTC.
+        /// </summary>
+        private static DateTime ToUtc(DateTime value) => value.Kind switch
+        {
+            DateTimeKind.Utc => value,
+            DateTimeKind.Local => value.ToUniversalTime(),
+            _ => DateTime.SpecifyKind(value, DateTimeKind.Utc),
+        };
+
+        private static DateTime? ToUtc(DateTime? value) =>
+            value.HasValue ? ToUtc(value.Value) : null;
     }
 }
