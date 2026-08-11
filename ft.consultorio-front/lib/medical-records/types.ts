@@ -43,6 +43,15 @@ export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
   [PaymentMethod.Other]: "Otro",
 }
 
+/**
+ * Los `<Select>` mandan el enum como texto en el form, y el `Select.Value` de
+ * base-ui necesita el mapa `items` para pintar la etiqueta en vez del valor
+ * crudo (sin él, el género se ve como «1»).
+ */
+export const GENDER_ITEMS: Record<string, string> = GENDER_LABELS
+export const PATIENT_STATUS_ITEMS: Record<string, string> = PATIENT_STATUS_LABELS
+export const PAYMENT_METHOD_ITEMS: Record<string, string> = PAYMENT_METHOD_LABELS
+
 // --- Respuestas --------------------------------------------------------------
 
 export interface Patient {

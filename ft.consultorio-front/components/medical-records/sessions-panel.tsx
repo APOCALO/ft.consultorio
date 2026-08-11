@@ -12,6 +12,7 @@ import {
 import { emptyFormState } from "@/lib/forms/helpers"
 import type { Session } from "@/lib/medical-records/types"
 import { formatDateTime, money } from "@/lib/format"
+import { DateTimeField } from "@/components/date-field"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -265,10 +266,9 @@ function SessionFormDialog({
             <div className="grid gap-4 sm:grid-cols-2">
               <Field>
                 <FieldLabel htmlFor="date">Fecha y hora</FieldLabel>
-                <Input
+                <DateTimeField
                   id="date"
                   name="date"
-                  type="datetime-local"
                   defaultValue={defaultDate}
                   disabled={isPending}
                 />
@@ -323,10 +323,9 @@ function SessionFormDialog({
             <div className="grid gap-4 sm:grid-cols-2">
               <Field>
                 <FieldLabel htmlFor="nextAppointment">Próxima cita</FieldLabel>
-                <Input
+                <DateTimeField
                   id="nextAppointment"
                   name="nextAppointment"
-                  type="datetime-local"
                   defaultValue={toLocalInput(session?.nextAppointment)}
                   disabled={isPending}
                 />

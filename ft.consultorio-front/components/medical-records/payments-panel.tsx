@@ -1,18 +1,21 @@
 "use client"
 
-import { useActionState, useEffect, useRef, useState } from "react"
+import { useActionState, useEffect, useMemo, useRef, useState } from "react"
+import { format } from "date-fns"
 import { toast } from "sonner"
 import { Plus } from "lucide-react"
 
 import { registerPaymentAction } from "@/lib/medical-records/actions"
 import { emptyFormState } from "@/lib/forms/helpers"
 import {
+  PAYMENT_METHOD_ITEMS,
   PAYMENT_METHOD_LABELS,
   PaymentMethod,
   type Payment,
   type Session,
 } from "@/lib/medical-records/types"
 import { formatDate, formatDateTime, money } from "@/lib/format"
+import { DateField } from "@/components/date-field"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import {
@@ -139,8 +142,24 @@ function PaymentDialog({
   )
   const wasPending = useRef(false)
   // Congelado al montar: recalcularlo en cada render cambiaría el defaultValue
-  // al pasar la medianoche sobre un input ya inicializado.
-  const [today] = useState(() => new Date().toISOString().slice(0, 10))
+  // al pasar la medianoche sobre un input ya inicializado. En hora local, que
+  // `toISOString()` es UTC y en Colombia adelantaría un día por la noche.
+  const [today] = useState(() => format(new Date(), "yyyy-MM-dd"))
+
+  // `Select.Value` de base-ui pinta el valor crudo (aquí, el GUID) si no le
+  // damos el mapa de etiquetas.
+  const sessionItems = useMemo<Record<string, string>>(
+    () => ({
+      "": "Sin asociar",
+      ...Object.fromEntries(
+        sessions.map((s) => [
+          s.id,
+          `${formatDateTime(s.date)} · ${money(s.price)}`,
+        ]),
+      ),
+    }),
+    [sessions],
+  )
 
   useEffect(() => {
     if (wasPending.current && !isPending) {
@@ -186,7 +205,11 @@ function PaymentDialog({
               </Field>
               <Field>
                 <FieldLabel htmlFor="method">Método</FieldLabel>
-                <Select name="method" defaultValue={String(PaymentMethod.Cash)}>
+                <Select
+                  name="method"
+                  items={PAYMENT_METHOD_ITEMS}
+                  defaultValue={String(PaymentMethod.Cash)}
+                >
                   <SelectTrigger id="method" className="w-full" disabled={isPending}>
                     <SelectValue />
                   </SelectTrigger>
@@ -210,10 +233,9 @@ function PaymentDialog({
 
             <Field>
               <FieldLabel htmlFor="paidAt">Fecha del pago</FieldLabel>
-              <Input
+              <DateField
                 id="paidAt"
                 name="paidAt"
-                type="date"
                 defaultValue={today}
                 disabled={isPending}
               />
@@ -222,7 +244,7 @@ function PaymentDialog({
             {sessions.length > 0 ? (
               <Field>
                 <FieldLabel htmlFor="sessionId">Sesión (opcional)</FieldLabel>
-                <Select name="sessionId" defaultValue="">
+                <Select name="sessionId" items={sessionItems} defaultValue="">
                   <SelectTrigger id="sessionId" className="w-full" disabled={isPending}>
                     <SelectValue placeholder="Sin asociar" />
                   </SelectTrigger>
@@ -230,7 +252,7 @@ function PaymentDialog({
                     <SelectItem value="">Sin asociar</SelectItem>
                     {sessions.map((s) => (
                       <SelectItem key={s.id} value={s.id}>
-                        {formatDateTime(s.date)} · {money(s.price)}
+                        {sessionItems[s.id]}
                       </SelectItem>
                     ))}
                   </SelectContent>

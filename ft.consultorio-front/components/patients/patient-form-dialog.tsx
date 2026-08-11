@@ -8,7 +8,12 @@ import {
   updatePatientAction,
 } from "@/lib/medical-records/actions"
 import { emptyFormState } from "@/lib/forms/helpers"
-import { Gender, GENDER_LABELS, type Patient } from "@/lib/medical-records/types"
+import {
+  Gender,
+  GENDER_ITEMS,
+  GENDER_LABELS,
+  type Patient,
+} from "@/lib/medical-records/types"
 import { BirthDatePicker } from "@/components/birthdate-picker"
 import { Button } from "@/components/ui/button"
 import {
@@ -101,6 +106,7 @@ export function PatientFormDialog({ open, onOpenChange, patient }: Props) {
                 <FieldLabel htmlFor="gender">Género</FieldLabel>
                 <Select
                   name="gender"
+                  items={GENDER_ITEMS}
                   defaultValue={String(patient?.gender ?? Gender.Unspecified)}
                 >
                   <SelectTrigger id="gender" className="w-full" disabled={isPending}>
