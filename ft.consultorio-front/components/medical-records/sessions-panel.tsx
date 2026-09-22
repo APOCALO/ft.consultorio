@@ -13,8 +13,10 @@ import { emptyFormState } from "@/lib/forms/helpers"
 import type { Session } from "@/lib/medical-records/types"
 import { formatDateTime, money } from "@/lib/format"
 import { DateTimeField } from "@/components/date-field"
+import { MoneyField } from "@/components/money-field"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 import {
   Card,
   CardDescription,
@@ -55,6 +57,12 @@ export function SessionsPanel({
   sessions: Session[]
 }) {
   const [creating, setCreating] = useState(false)
+
+  useEffect(() => {
+    const id = window.location.hash.slice(1)
+    if (!id) return
+    document.getElementById(id)?.scrollIntoView({ block: "center" })
+  }, [])
   // Cuenta las aperturas: al usarla como `key` del diálogo, cada «Nueva sesión»
   // arranca con una instancia limpia (fecha actual y estado del form vacío).
   // Solo cambia al abrir, así que la animación de cierre se conserva.
@@ -126,12 +134,15 @@ function SessionCard({
   const [remove, setRemove] = useState(false)
 
   return (
-    <Card className="p-4">
+    <Card id={`session-${session.id}`} className="scroll-mt-24 p-4 target:ring-2 target:ring-ring">
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <p className="text-sm font-medium">{formatDateTime(session.date)}</p>
           <p className="text-xs text-muted-foreground">
             Dolor {session.painScale}/10 · {money(session.price)}
+            {session.nextAppointment
+              ? ` · Próxima cita ${formatDateTime(session.nextAppointment)}`
+              : ""}
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -157,15 +168,12 @@ function SessionCard({
         </div>
       </div>
 
-      {(session.evolution ||
-        session.treatmentPerformed ||
-        session.recommendations) && (
-        <div className="mt-3 grid gap-2 text-sm sm:grid-cols-3">
-          <Detail label="Evolución" value={session.evolution} />
-          <Detail label="Tratamiento" value={session.treatmentPerformed} />
-          <Detail label="Recomendaciones" value={session.recommendations} />
-        </div>
-      )}
+      <Separator />
+      <div className="flex flex-col gap-3">
+        <Detail label="Evolución" value={session.evolution} />
+        <Detail label="Tratamiento realizado" value={session.treatmentPerformed} />
+        <Detail label="Recomendaciones" value={session.recommendations} />
+      </div>
 
       <SessionFormDialog
         open={edit}
@@ -189,11 +197,11 @@ function SessionCard({
 }
 
 function Detail({ label, value }: { label: string; value?: string | null }) {
-  if (!value) return null
+  const text = value?.trim()
   return (
     <div>
       <p className="text-xs text-muted-foreground">{label}</p>
-      <p className="whitespace-pre-wrap">{value}</p>
+      <p className="whitespace-pre-wrap text-sm">{text || "—"}</p>
     </div>
   )
 }
@@ -332,13 +340,10 @@ function SessionFormDialog({
               </Field>
               <Field>
                 <FieldLabel htmlFor="price">Valor</FieldLabel>
-                <Input
+                <MoneyField
                   id="price"
                   name="price"
-                  type="number"
-                  min={0}
-                  step="1000"
-                  defaultValue={session?.price ?? 0}
+                  defaultValue={session && session.price > 0 ? session.price : ""}
                   disabled={isPending}
                 />
               </Field>

@@ -14,6 +14,8 @@ namespace Ft.Consultorio.MsMedicalRecords.Domain.Sessions
         public DateTime? NextAppointment { get; private set; }
         public decimal Price { get; private set; }
         public bool Paid { get; private set; }
+        /// <summary>Momento en que se marcó pagada. Es el que cuenta como ingreso del mes.</summary>
+        public DateTime? PaidAt { get; private set; }
 
         private Session() { }
 
@@ -39,6 +41,7 @@ namespace Ft.Consultorio.MsMedicalRecords.Domain.Sessions
             NextAppointment = nextAppointment;
             Price = price;
             Paid = paid;
+            PaidAt = paid ? DateTime.UtcNow : null;
         }
 
         public static Session Create(
@@ -98,12 +101,23 @@ namespace Ft.Consultorio.MsMedicalRecords.Domain.Sessions
             Recommendations = Clean(recommendations);
             NextAppointment = ToUtc(nextAppointment);
             Price = price;
+            if (paid)
+            {
+                if (!Paid || PaidAt is null)
+                    PaidAt = DateTime.UtcNow;
+            }
+            else
+            {
+                PaidAt = null;
+            }
             Paid = paid;
             SetAuditUpdate(updatedById);
         }
 
         public void MarkAsPaid(Guid updatedById)
         {
+            if (!Paid || PaidAt is null)
+                PaidAt = DateTime.UtcNow;
             Paid = true;
             SetAuditUpdate(updatedById);
         }

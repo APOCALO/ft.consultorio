@@ -7,5 +7,7 @@ namespace Ft.Consultorio.MsMedicalRecords.Application.Dashboard.DTOs
         public int SessionsToday { get; set; }
         public decimal IncomeThisMonth { get; set; }
         public decimal PendingBalance { get; set; }
+        public IReadOnlyList<DashboardPatientBalanceDTO> Income { get; set; } = [];
+        public IReadOnlyList<DashboardPatientBalanceDTO> Pending { get; set; } = [];
     }
 }

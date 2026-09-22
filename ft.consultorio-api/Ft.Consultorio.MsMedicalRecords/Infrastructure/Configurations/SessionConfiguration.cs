@@ -22,6 +22,7 @@ namespace Ft.Consultorio.MsMedicalRecords.Infrastructure.Configurations
             builder.Property(x => x.Recommendations).HasMaxLength(4000);
             builder.Property(x => x.Price).HasPrecision(18, 2);
             builder.Property(x => x.Paid).IsRequired();
+            builder.Property(x => x.PaidAt);
         }
     }
 }

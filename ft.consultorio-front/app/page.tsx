@@ -105,13 +105,13 @@ export default async function DashboardPage() {
                   icon={<TrendingUp className="size-3.5" />}
                   label="Ingresos del mes"
                   value={money(dashboard.incomeThisMonth)}
-                  tone="success"
+                  action={{ href: "/ingresos", label: "Ver quién pagó" }}
                 />
                 <Kpi
                   icon={<AlertTriangle className="size-3.5" />}
                   label="Saldo pendiente"
                   value={money(dashboard.pendingBalance)}
-                  tone={dashboard.pendingBalance > 0 ? "warning" : "muted"}
+                  action={{ href: "/saldo", label: "Ver quién debe" }}
                 />
               </section>
 
@@ -178,12 +178,14 @@ function Kpi({
   label,
   value,
   hint,
+  action,
   tone = "muted",
 }: {
   icon: React.ReactNode
   label: string
   value: string
   hint?: string
+  action?: { href: string; label: string }
   tone?: "success" | "warning" | "muted"
 }) {
   const toneClass = {
@@ -206,6 +208,19 @@ function Kpi({
       {hint ? (
         <CardContent>
           <p className={`text-[11.5px] ${toneClass}`}>{hint}</p>
+        </CardContent>
+      ) : null}
+      {action ? (
+        <CardContent>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="-ml-2 text-muted-foreground"
+            render={<Link href={action.href} />}
+          >
+            {action.label}
+            <ArrowRight data-icon="inline-end" />
+          </Button>
         </CardContent>
       ) : null}
     </Card>

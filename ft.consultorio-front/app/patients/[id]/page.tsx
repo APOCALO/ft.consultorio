@@ -7,7 +7,6 @@ import { getCurrentUser } from "@/lib/auth/session"
 import {
   getMedicalRecord,
   getPatient,
-  getPayments,
   getSessions,
 } from "@/lib/medical-records/api"
 import {
@@ -15,14 +14,12 @@ import {
   PATIENT_STATUS_LABELS,
   PatientStatus,
   type MedicalRecord,
-  type Payment,
   type Session,
 } from "@/lib/medical-records/types"
 import { formatDate } from "@/lib/format"
 import { AppShell } from "@/components/dashboard/app-shell"
 import { PatientRowActions } from "@/components/patients/patient-actions"
 import { MedicalRecordPanel } from "@/components/medical-records/medical-record-panel"
-import { PaymentsPanel } from "@/components/medical-records/payments-panel"
 import { SessionsPanel } from "@/components/medical-records/sessions-panel"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -42,13 +39,17 @@ const STATUS_VARIANT: Record<PatientStatus, "success" | "warning" | "outline"> =
 
 export default async function PatientDetailPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ id: string }>
+  searchParams: Promise<{ tab?: string }>
 }) {
   const user = await getCurrentUser()
   if (!user) redirect("/login")
 
   const { id } = await params
+  const { tab } = await searchParams
+  const initialTab = tab === "sessions" || tab === "data" ? tab : "record"
 
   const patient = await getPatient(id).catch((error) => {
     if (error instanceof ApiError && error.status === 401) redirect("/logout")
@@ -66,10 +67,9 @@ export default async function PatientDetailPage({
     if (!(error instanceof ApiError && error.status === 404)) throw error
   }
 
-  const [sessions, payments] = await Promise.all([
-    record ? getSessions(record.id) : Promise.resolve<Session[]>([]),
-    getPayments(id).catch(() => [] as Payment[]),
-  ])
+  const sessions = record
+    ? await getSessions(record.id)
+    : ([] as Session[])
 
   return (
     <AppShell
@@ -94,11 +94,10 @@ export default async function PatientDetailPage({
         </>
       }
     >
-      <Tabs defaultValue="record">
+      <Tabs defaultValue={initialTab}>
         <TabsList>
           <TabsTrigger value="record">Historia clínica</TabsTrigger>
           <TabsTrigger value="sessions">Sesiones</TabsTrigger>
-          <TabsTrigger value="payments">Pagos</TabsTrigger>
           <TabsTrigger value="data">Datos</TabsTrigger>
         </TabsList>
 
@@ -112,10 +111,6 @@ export default async function PatientDetailPage({
             recordId={record?.id ?? null}
             sessions={sessions}
           />
-        </TabsContent>
-
-        <TabsContent value="payments" className="mt-4">
-          <PaymentsPanel patientId={id} payments={payments} sessions={sessions} />
         </TabsContent>
 
         <TabsContent value="data" className="mt-4">

@@ -1,11 +1,23 @@
 "use client"
 
-import { useState } from "react"
+import {
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ChangeEvent,
+  type RefObject,
+} from "react"
 import { format, isValid, parse } from "date-fns"
 import { es } from "date-fns/locale"
 import { CalendarIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+import {
+  caretForMasked,
+  isDeleteInput,
+  maskDate,
+  maskTime,
+} from "@/lib/input-mask"
 import { Calendar } from "@/components/ui/calendar"
 import { Input } from "@/components/ui/input"
 import {
@@ -139,6 +151,41 @@ function DatePopover({
   )
 }
 
+function useMaskCaret(value: string) {
+  const ref = useRef<HTMLInputElement>(null)
+  const caret = useRef<number | null>(null)
+
+  useLayoutEffect(() => {
+    const el = ref.current
+    const pos = caret.current
+    if (!el || pos == null) return
+    el.setSelectionRange(pos, pos)
+    caret.current = null
+  }, [value])
+
+  return { ref, caret }
+}
+
+function applyMask(
+  event: ChangeEvent<HTMLInputElement>,
+  current: string,
+  mask: (value: string, deleting: boolean) => string,
+  caret: RefObject<number | null>,
+  setValue: (value: string) => void,
+) {
+  const raw = event.target.value
+  const start = event.target.selectionStart ?? raw.length
+  const masked = mask(raw, isDeleteInput(event.nativeEvent))
+  const pos = caretForMasked(raw, start, masked)
+  caret.current = pos
+  if (masked === current) {
+    event.target.value = current
+    event.target.setSelectionRange(pos, pos)
+    return
+  }
+  setValue(masked)
+}
+
 type DateFieldProps = CalendarLimits & {
   id?: string
   name: string
@@ -152,8 +199,9 @@ type DateFieldProps = CalendarLimits & {
  * Campo de fecha en formato local (dd/MM/yyyy). Un `<input type="date">` nativo
  * usa el formato del locale del navegador (en-US → MM/dd/yyyy), no es
  * configurable y en varios navegadores no deja copiar ni pegar. Aquí el usuario
- * escribe o pega libremente y el calendario es solo un atajo; el valor viaja
- * como `yyyy-MM-dd` en un input oculto (sin desfase de zona horaria).
+ * escribe o pega libremente (las barras se insertan solas: `23111994` →
+ * `23/11/1994`) y el calendario es solo un atajo; el valor viaja como
+ * `yyyy-MM-dd` en un input oculto (sin desfase de zona horaria).
  */
 export function DateField({
   id,
@@ -166,24 +214,33 @@ export function DateField({
   defaultMonth,
 }: DateFieldProps) {
   const [text, setText] = useState(() => splitIso(defaultValue).date)
+  const [blurred, setBlurred] = useState(false)
+  const { ref, caret } = useMaskCaret(text)
   const date = parseDateText(text)
 
   return (
     <div className="relative">
       <input type="hidden" name={name} value={date ? format(date, ISO) : ""} />
       <Input
+        ref={ref}
         id={id ?? name}
         value={text}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => {
+          setBlurred(false)
+          applyMask(e, text, maskDate, caret, setText)
+        }}
         onBlur={() => {
+          setBlurred(true)
           // Normaliza lo escrito (`3/5/2024`, `2024-05-03`…) a dd/MM/yyyy.
           if (date) setText(format(date, DISPLAY))
         }}
         placeholder="dd/mm/aaaa"
         inputMode="numeric"
         autoComplete="off"
+        spellCheck={false}
+        maxLength={10}
         disabled={disabled}
-        aria-invalid={invalid || (text.trim() !== "" && !date)}
+        aria-invalid={Boolean(invalid) || (blurred && text.trim() !== "" && !date)}
         className="pr-10"
       />
       <DatePopover
@@ -222,6 +279,10 @@ export function DateTimeField({
   const initial = splitIso(defaultValue)
   const [dateText, setDateText] = useState(initial.date)
   const [timeText, setTimeText] = useState(initial.time)
+  const [dateBlurred, setDateBlurred] = useState(false)
+  const [timeBlurred, setTimeBlurred] = useState(false)
+  const dateMask = useMaskCaret(dateText)
+  const timeMask = useMaskCaret(timeText)
 
   const date = parseDateText(dateText)
   const time = parseTimeText(timeText)
@@ -233,10 +294,15 @@ export function DateTimeField({
       <input type="hidden" name={name} value={value} />
       <div className="relative flex-1">
         <Input
+          ref={dateMask.ref}
           id={id ?? name}
           value={dateText}
-          onChange={(e) => setDateText(e.target.value)}
+          onChange={(e) => {
+            setDateBlurred(false)
+            applyMask(e, dateText, maskDate, dateMask.caret, setDateText)
+          }}
           onBlur={() => {
+            setDateBlurred(true)
             if (date) {
               setDateText(format(date, DISPLAY))
               if (!timeText.trim()) setTimeText(defaultTime)
@@ -245,8 +311,12 @@ export function DateTimeField({
           placeholder="dd/mm/aaaa"
           inputMode="numeric"
           autoComplete="off"
+          spellCheck={false}
+          maxLength={10}
           disabled={disabled}
-          aria-invalid={invalid || (dateText.trim() !== "" && !date)}
+          aria-invalid={
+            Boolean(invalid) || (dateBlurred && dateText.trim() !== "" && !date)
+          }
           className="pr-10"
         />
         <DatePopover
@@ -262,17 +332,24 @@ export function DateTimeField({
         />
       </div>
       <Input
+        ref={timeMask.ref}
         aria-label="Hora"
         value={timeText}
-        onChange={(e) => setTimeText(e.target.value)}
+        onChange={(e) => {
+          setTimeBlurred(false)
+          applyMask(e, timeText, maskTime, timeMask.caret, setTimeText)
+        }}
         onBlur={() => {
+          setTimeBlurred(true)
           if (time) setTimeText(time)
         }}
         placeholder="hh:mm"
         inputMode="numeric"
         autoComplete="off"
+        spellCheck={false}
+        maxLength={5}
         disabled={disabled}
-        aria-invalid={timeText.trim() !== "" && !time}
+        aria-invalid={timeBlurred && timeText.trim() !== "" && !time}
         className="w-24 shrink-0 tabular-nums"
       />
     </div>

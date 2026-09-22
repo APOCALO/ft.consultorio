@@ -17,13 +17,6 @@ export enum PatientStatus {
   Discharged = 2,
 }
 
-export enum PaymentMethod {
-  Cash = 0,
-  Card = 1,
-  Transfer = 2,
-  Other = 3,
-}
-
 export const GENDER_LABELS: Record<Gender, string> = {
   [Gender.Unspecified]: "Sin especificar",
   [Gender.Male]: "Masculino",
@@ -36,13 +29,6 @@ export const PATIENT_STATUS_LABELS: Record<PatientStatus, string> = {
   [PatientStatus.Discharged]: "Dado de alta",
 }
 
-export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
-  [PaymentMethod.Cash]: "Efectivo",
-  [PaymentMethod.Card]: "Tarjeta",
-  [PaymentMethod.Transfer]: "Transferencia",
-  [PaymentMethod.Other]: "Otro",
-}
-
 /**
  * Los `<Select>` mandan el enum como texto en el form, y el `Select.Value` de
  * base-ui necesita el mapa `items` para pintar la etiqueta en vez del valor
@@ -50,7 +36,6 @@ export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
  */
 export const GENDER_ITEMS: Record<string, string> = GENDER_LABELS
 export const PATIENT_STATUS_ITEMS: Record<string, string> = PATIENT_STATUS_LABELS
-export const PAYMENT_METHOD_ITEMS: Record<string, string> = PAYMENT_METHOD_LABELS
 
 // --- Respuestas --------------------------------------------------------------
 
@@ -123,18 +108,18 @@ export interface Session {
   updatedById?: string | null
 }
 
-export interface Payment {
-  id: string
+export interface DashboardSessionBalance {
+  sessionId: string
+  date: string
+  paidAt?: string | null
+  price: number
+}
+
+export interface DashboardPatientBalance {
   patientId: string
-  sessionId?: string | null
-  amount: number
-  method: PaymentMethod
-  reference?: string | null
-  paidAt: string
-  createdAt: string
-  createdById: string
-  updatedAt?: string | null
-  updatedById?: string | null
+  patientName: string
+  total: number
+  sessions: DashboardSessionBalance[]
 }
 
 export interface Dashboard {
@@ -143,6 +128,8 @@ export interface Dashboard {
   sessionsToday: number
   incomeThisMonth: number
   pendingBalance: number
+  income?: DashboardPatientBalance[]
+  pending?: DashboardPatientBalance[]
 }
 
 export interface Pagination {
@@ -197,10 +184,3 @@ export interface SessionInput {
   paid: boolean
 }
 
-export interface PaymentInput {
-  sessionId?: string | null
-  amount: number
-  method: PaymentMethod
-  reference?: string | null
-  paidAt?: string | null
-}

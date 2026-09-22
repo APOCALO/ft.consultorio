@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache"
 
+import { parseCop } from "@/lib/format"
 import {
   bool,
   str,
@@ -12,7 +13,6 @@ import {
 import * as api from "./api"
 import {
   Gender,
-  PaymentMethod,
   type MedicalHistory,
   type PatientInput,
   type SessionInput,
@@ -23,7 +23,8 @@ import {
 function num(data: FormData, key: string, fallback = 0): number {
   const raw = str(data, key)
   if (!raw) return fallback
-  const n = Number(raw)
+  // Acepta `50000` y el formato COP `50.000` (el punto es de miles, no decimal).
+  const n = parseCop(raw)
   return Number.isFinite(n) ? n : fallback
 }
 
@@ -212,6 +213,7 @@ export async function createSessionAction(
     return toFormState(error)
   }
   if (patientId) revalidatePath(`/patients/${patientId}`)
+  revalidatePath("/")
   return { ok: true, message: "Sesión registrada." }
 }
 
@@ -228,6 +230,7 @@ export async function updateSessionAction(
     return toFormState(error)
   }
   if (patientId) revalidatePath(`/patients/${patientId}`)
+  revalidatePath("/")
   return { ok: true, message: "Sesión actualizada." }
 }
 
@@ -244,34 +247,6 @@ export async function deleteSessionAction(
     return toFormState(error)
   }
   if (patientId) revalidatePath(`/patients/${patientId}`)
+  revalidatePath("/")
   return { ok: true, message: "Sesión eliminada." }
-}
-
-// --- Pagos -------------------------------------------------------------------
-
-export async function registerPaymentAction(
-  _prev: FormState,
-  data: FormData,
-): Promise<FormState> {
-  const patientId = str(data, "patientId")
-  if (!patientId) return { ok: false, message: "Paciente inválido." }
-
-  const values = { amount: str(data, "amount"), method: str(data, "method") }
-  if (!values.amount || Number(values.amount) <= 0) {
-    return { ok: false, values, fieldErrors: { amount: "Ingresa un monto válido." } }
-  }
-
-  try {
-    await api.registerPayment(patientId, {
-      sessionId: strOrNull(data, "sessionId"),
-      amount: num(data, "amount", 0),
-      method: num(data, "method", PaymentMethod.Cash) as PaymentMethod,
-      reference: strOrNull(data, "reference"),
-      paidAt: strOrNull(data, "paidAt"),
-    })
-  } catch (error) {
-    return toFormState(error, values)
-  }
-  revalidatePath(`/patients/${patientId}`)
-  return { ok: true, message: "Pago registrado." }
 }

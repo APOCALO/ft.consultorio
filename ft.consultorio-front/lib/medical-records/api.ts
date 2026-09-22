@@ -10,8 +10,6 @@ import type {
   PagedResult,
   Patient,
   PatientInput,
-  Payment,
-  PaymentInput,
   Session,
   SessionInput,
 } from "./types"
@@ -147,20 +145,4 @@ export function updateSession(id: string, input: SessionInput): Promise<Session>
 
 export function deleteSession(id: string): Promise<void> {
   return mr<void>(`/sessions/${id}`, { method: "DELETE" })
-}
-
-// --- Pagos -------------------------------------------------------------------
-
-export function getPayments(patientId: string): Promise<Payment[]> {
-  return mr<Payment[]>(`/patients/${patientId}/payments`)
-}
-
-export function registerPayment(
-  patientId: string,
-  input: PaymentInput,
-): Promise<Payment> {
-  return mr<Payment>(`/patients/${patientId}/payments`, {
-    method: "POST",
-    body: input,
-  })
 }

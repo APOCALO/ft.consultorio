@@ -263,6 +263,9 @@ namespace Ft.Consultorio.MsMedicalRecords.Migrations
                     b.Property<bool>("Paid")
                         .HasColumnType("boolean");
 
+                    b.Property<DateTime?>("PaidAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("PainScale")
                         .HasColumnType("integer");
 
